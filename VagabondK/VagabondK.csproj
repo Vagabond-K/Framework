@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <RootNamespace>System</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\VagabondK.xml</DocumentationFile>
     <Company>Vagabond K</Company>
     <Authors>Vagabond K</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIcon>nugetIcon.png</PackageIcon>
-    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>그냥 Vagabond K가 개인적으로 편하게 코딩하려고 만든 라이브러리입니다.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageProjectUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK</PackageProjectUrl>
   </PropertyGroup>
 

@@ -7,10 +7,10 @@ namespace System.ComponentModel
     /// </summary>
     public sealed class PropertyValues : NotifyPropertyChangeObject
     {
-        private PropertyValues(object eventSource, PropertyChangingEventHandler propertyChangingEventHandler, PropertyChangedEventHandler propertyChangedEventHandler) : base(eventSource)
+        private PropertyValues(object eventSource, PropertyChangingEventHandler propertyChangingEvent, PropertyChangedEventHandler propertyChangedEvent) : base(eventSource)
         {
-            PropertyChanging += propertyChangingEventHandler;
-            PropertyChanged += propertyChangedEventHandler;
+            PropertyChanging += propertyChangingEvent;
+            PropertyChanged += propertyChangedEvent;
         }
 
         /// <summary>
@@ -18,31 +18,31 @@ namespace System.ComponentModel
         /// </summary>
         /// <typeparam name="TEventSource">PropertyChanged 이벤트를 포함하는 객체 형식</typeparam>
         /// <param name="eventSource">PropertyChanged 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangedEventHandler">PropertyChanged 이벤트 처리기</param>
+        /// <param name="propertyChangedEvent">PropertyChanged 이벤트</param>
         /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangedEventHandler propertyChangedEventHandler) where TEventSource : class, INotifyPropertyChanged
-            => new PropertyValues(eventSource, null, propertyChangedEventHandler);
+        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangedEventHandler propertyChangedEvent) where TEventSource : class, INotifyPropertyChanged
+            => new PropertyValues(eventSource, null, propertyChangedEvent);
 
         /// <summary>
         /// PropertyValues 객체 생성
         /// </summary>
         /// <typeparam name="TEventSource">PropertyChanging 이벤트를 포함하는 객체 형식</typeparam>
         /// <param name="eventSource">PropertyChanging 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangingEventHandler">PropertyChanging 이벤트 처리기</param>
+        /// <param name="propertyChangingEvent">PropertyChanging 이벤트</param>
         /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEventHandler) where TEventSource : class, INotifyPropertyChanging
-            => new PropertyValues(eventSource, propertyChangingEventHandler, null);
+        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEvent) where TEventSource : class, INotifyPropertyChanging
+            => new PropertyValues(eventSource, propertyChangingEvent, null);
 
         /// <summary>
         /// PropertyValues 객체 생성
         /// </summary>
         /// <typeparam name="TEventSource">PropertyChanging, PropertyChanged 이벤트를 포함하는 객체 형식</typeparam>
         /// <param name="eventSource">PropertyChanging, PropertyChanged 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangingEventHandler">PropertyChanging 이벤트 처리기</param>
-        /// <param name="propertyChangedEventHandler">PropertyChanged 이벤트 처리기</param>
+        /// <param name="propertyChangingEvent">PropertyChanging 이벤트</param>
+        /// <param name="propertyChangedEvent">PropertyChanged 이벤트</param>
         /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEventHandler, PropertyChangedEventHandler propertyChangedEventHandler) where TEventSource : class, INotifyPropertyChanging, INotifyPropertyChanged
-            => new PropertyValues(eventSource, propertyChangingEventHandler, propertyChangedEventHandler);
+        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEvent, PropertyChangedEventHandler propertyChangedEvent) where TEventSource : class, INotifyPropertyChanging, INotifyPropertyChanged
+            => new PropertyValues(eventSource, propertyChangingEvent, propertyChangedEvent);
 
         /// <summary>
         /// 속성 값 가져오기

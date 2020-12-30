@@ -159,6 +159,47 @@ namespace System
         }
 
         /// <summary>
+        /// 즉석 커맨드 가져오기
+        /// </summary>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        protected InstantCommand Get(Action executeAction, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand(executeAction), propertyName);
+
+        /// <summary>
+        /// 즉석 커맨드 가져오기
+        /// </summary>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
+        /// <param name="propertyName"></param>
+        /// <returns>커맨드</returns>
+        protected InstantCommand Get(Action executeAction, Func<bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand(executeAction, canExecuteFunc), propertyName);
+
+        /// <summary>
+        /// 파라미터를 포함한 즉석 커맨드 가져오기
+        /// </summary>
+        /// <typeparam name="TParameter">파라미터 형식</typeparam>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        protected InstantCommand<TParameter> Get<TParameter>(Action<TParameter> executeAction, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand<TParameter>(executeAction), propertyName);
+
+        /// <summary>
+        /// 파라미터를 포함한 즉석 커맨드 가져오기
+        /// </summary>
+        /// <typeparam name="TParameter">파라미터 형식</typeparam>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
+        /// <param name="propertyName"></param>
+        /// <returns>커맨드</returns>
+        protected InstantCommand<TParameter> Get<TParameter>(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand<TParameter>(executeAction, canExecuteFunc), propertyName);
+
+
+        /// <summary>
         /// 속성 값 설정하기
         /// </summary>
         /// <typeparam name="TProperty">속성 형식</typeparam>
@@ -216,6 +257,7 @@ namespace System
             OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
             return true;
         }
+
 
         /// <summary>
         /// 속성 값 제거, 제거되면 다시 Get으로 속성 값을 가져올 때 속성 초기화 동작 결과나 기본 값을 반환함.
