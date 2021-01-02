@@ -5,9 +5,20 @@ using System.Windows.Input;
 namespace System
 {
     /// <summary>
+    /// 즉석에서 정의해서 사용하는 커맨드 인터페이스
+    /// </summary>
+    public interface IInstantCommand : ICommand
+    {
+        /// <summary>
+        /// CanExecuteChanged 이벤트를 발생시킴.
+        /// </summary>
+        void RaiseCanExecuteChanged();
+    }
+
+    /// <summary>
     /// 즉석에서 정의해서 사용하는 커맨드의 기본 클래스
     /// </summary>
-    public abstract class InstantCommandBase : ICommand
+    public abstract class InstantCommandBase : IInstantCommand
     {
         /// <summary>
         /// 생성자
@@ -39,10 +50,7 @@ namespace System
             }
         }
 
-        /// <summary>
-        /// CanExecuteChanged 이벤트를 발생시킴.
-        /// </summary>
-        public void RaiseCanExecuteChanged() => OnCanExecuteChanged();
+        void IInstantCommand.RaiseCanExecuteChanged() => OnCanExecuteChanged();
 
         void ICommand.Execute(object parameter) => Execute(parameter);
         bool ICommand.CanExecute(object parameter) => CanExecute(parameter);

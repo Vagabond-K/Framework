@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK", "VagabondK\Vaga
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{665FD0EA-83A7-4BA2-B722-85D637824FD7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK.Windows", "VagabondK.Windows\VagabondK.Windows.csproj", "{A39152A1-B3CA-484C-98B5-3BC1F11B26BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsSample", "Samples\WindowsSample\WindowsSample.csproj", "{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsSample_net45", "Samples\WindowsSample_net45\WindowsSample_net45.csproj", "{1693EDEA-06DC-4880-B45A-3E6D216110F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,9 +23,25 @@ Global
 		{792B517F-AE6F-40C4-9EEB-54776AA87513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{792B517F-AE6F-40C4-9EEB-54776AA87513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{792B517F-AE6F-40C4-9EEB-54776AA87513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39152A1-B3CA-484C-98B5-3BC1F11B26BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39152A1-B3CA-484C-98B5-3BC1F11B26BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39152A1-B3CA-484C-98B5-3BC1F11B26BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39152A1-B3CA-484C-98B5-3BC1F11B26BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06} = {665FD0EA-83A7-4BA2-B722-85D637824FD7}
+		{1693EDEA-06DC-4880-B45A-3E6D216110F8} = {665FD0EA-83A7-4BA2-B722-85D637824FD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB92484F-2392-413B-88D2-00E57018D6A0}

@@ -96,8 +96,6 @@ namespace System
                     ? new PropertyValue<TProperty>()
                     : (PropertyValue)Activator.CreateInstance(typeof(PropertyValue<>).MakeGenericType(propertyType));
 
-                newPropertyValue.type = propertyType;
-
                 TProperty newValue = default;
                 if (factory != null)
                     newValue = factory.Invoke();
@@ -142,14 +140,12 @@ namespace System
                 {
                     propertyValue = new PropertyValue<TProperty>()
                     {
-                        type = propertyType,
                         value = defaultValue
                     };
                 }
                 else
                 {
                     propertyValue = (PropertyValue)Activator.CreateInstance(typeof(PropertyValue<>).MakeGenericType(propertyType));
-                    propertyValue.type = propertyType;
                     propertyValue.SetValue(defaultValue);
                 }
                 propertyValues[propertyName] = propertyValue;
@@ -238,7 +234,6 @@ namespace System
 
                     propertyValue = new PropertyValue<TProperty>
                     {
-                        type = propertyType,
                         value = value
                     };
                 }
@@ -247,7 +242,6 @@ namespace System
                     if (!OnPropertyChanging((QueryPropertyChangingEventArgs)Activator.CreateInstance(typeof(QueryPropertyChangingEventArgs<>).MakeGenericType(propertyType), propertyName, value))) return false;
 
                     propertyValue = (PropertyValue)Activator.CreateInstance(typeof(PropertyValue<>).MakeGenericType(propertyType));
-                    propertyValue.type = propertyType;
                     propertyValue.SetValue(value);
                 }
 
@@ -284,6 +278,11 @@ namespace System
 
         private class PropertyValue<T> : PropertyValue
         {
+            public PropertyValue()
+            {
+                type = typeof(T);
+            }
+
             public T value;
 
             public override TValue GetValue<TValue>()

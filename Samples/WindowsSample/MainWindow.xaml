@@ -1,0 +1,52 @@
+﻿<vk:ThemeWindow
+    x:Class="WindowsSample.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vk="http://schemas.vagabond-k.com/winfx/2016/xaml"
+    xmlns:viewmodel="clr-namespace:WindowsSample.ViewModels"
+    xmlns:local="clr-namespace:WindowsSample"
+    mc:Ignorable="d"
+    vk:ThemeManager.ThemeName="Dark" d:Background="Transparent"
+    d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel, IsDesignTimeCreatable=True}"
+    Title="MainWindow" Width="300" Height="200" Icon="Icon.ico">
+    <Grid>
+        <FrameworkElement.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+        </FrameworkElement.Resources>
+        <Viewbox>
+            <Grid Margin="3" Width="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" TextBlock.FontSize="24">
+                    <Label>
+                        <TextBlock Text="{Binding Int32Value, StringFormat=F2}"/>
+                    </Label>
+                    <Label>
+                        <TextBlock Text="{Binding FloatValue, StringFormat=F2}"/>
+                    </Label>
+                    <Label>
+                        <TextBlock Text="{Binding DoubleValue, StringFormat=F2}"/>
+                    </Label>
+                </StackPanel>
+
+                <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="커맨드 활성화" IsChecked="{Binding IsEnabledCommands}" HorizontalAlignment="Center"/>
+
+                <Button Grid.Row="2" Grid.Column="0" Content="증가" Command="{Binding IncreaseCommand}"/>
+                <Button Grid.Row="2" Grid.Column="1" Content="감소" Command="{Binding DecreaseCommand}"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</vk:ThemeWindow>
