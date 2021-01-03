@@ -85,14 +85,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}" />
-        <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-        <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
-    </Style>
-
+    
     <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
         <ControlTemplate.Resources>
             <Storyboard x:Key="HoverOn">
@@ -190,6 +183,15 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}" />
+        <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
+    </Style>
+
+
 
     <Style x:Key="RadioButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -213,15 +215,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type CheckBox}">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
-        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource NormalBrush}" />
-        <Setter Property="Template" Value="{DynamicResource CheckBoxTemplate}" />
-    </Style>
-
     <ControlTemplate x:Key="CheckBoxTemplate" TargetType="{x:Type CheckBox}">
         <ControlTemplate.Resources>
             <Storyboard x:Key="HoverOn">
@@ -349,15 +342,13 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type RadioButton}">
+    <Style TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBrush}" />
-        <Setter Property="Template" Value="{DynamicResource RadioButtonTemplate}" />
-        <Style.Triggers>
-        </Style.Triggers>
+        <Setter Property="Template" Value="{DynamicResource CheckBoxTemplate}" />
     </Style>
 
     <ControlTemplate x:Key="RadioButtonTemplate" TargetType="{x:Type RadioButton}">
@@ -464,6 +455,18 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style TargetType="{x:Type RadioButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Template" Value="{DynamicResource RadioButtonTemplate}" />
+        <Style.Triggers>
+        </Style.Triggers>
+    </Style>
+
 
     <Style d:IsControlPart="True" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
@@ -1309,12 +1312,6 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type ComboBox}">
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
-    </Style>
-
     <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
         <Grid x:Name="grid">
             <ToggleButton Grid.Column="2" Template="{DynamicResource ComboBoxToggleButton}" x:Name="ToggleButton" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" />
@@ -1350,6 +1347,13 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style TargetType="{x:Type ComboBox}">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
+    </Style>
+
 
     <Style d:IsControlPart="True" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
@@ -1499,15 +1503,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type TextBox}">
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="AllowDrop" Value="true" />
-        <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="#FF808080"/>
-    </Style>
 
     <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
         <ControlTemplate.Resources>
@@ -1590,6 +1585,17 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="#FF808080"/>
+    </Style>
+
 
     <Style TargetType="{x:Type PasswordBox}">
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
@@ -3399,7 +3405,7 @@
                 <WindowChrome ResizeBorderThickness="5" CaptionHeight="24" CornerRadius="5" GlassFrameThickness="1" UseAeroCaptionButtons="False" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Background">
+        <Setter Property="ClientBackground">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#DD000000" Offset="0"/>
@@ -3437,8 +3443,8 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" MaxWidth="16" MaxHeight="16" Margin="3"/>
-                                            <TextBlock Grid.Column="1" Foreground="{StaticResource TextBrush}" Text="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" Margin="2,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            <Image Source="{TemplateBinding Icon}" MaxWidth="16" MaxHeight="16" Margin="3"/>
+                                            <TextBlock Grid.Column="1" Foreground="{StaticResource TextBrush}" Text="{TemplateBinding Title}" Margin="2,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                         </Grid>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                                             <Button x:Name="PART_MinimizeButton" Focusable="False" Style="{StaticResource ThemeWindowButton}">
@@ -3468,7 +3474,7 @@
                                     <Border.BorderBrush>
                                         <SolidColorBrush Color="{StaticResource MainColor}" />
                                     </Border.BorderBrush>
-                                    <Border BorderBrush="{StaticResource NormalBorderBrush}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="0,0,0.5,0.5" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                                    <Border BorderBrush="{StaticResource NormalBorderBrush}" Background="{TemplateBinding ClientBackground}" BorderThickness="1" CornerRadius="0,0,0.5,0.5" SnapsToDevicePixels="True" UseLayoutRounding="True">
                                         <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2" />
                                     </Border>
                                 </Border>

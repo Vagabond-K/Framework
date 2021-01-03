@@ -8,20 +8,22 @@
     xmlns:viewmodel="clr-namespace:WindowsSample.ViewModels"
     xmlns:local="clr-namespace:WindowsSample"
     mc:Ignorable="d"
-    vk:ThemeManager.ThemeName="Dark" d:Background="Transparent"
+    Background="Transparent"
     d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel, IsDesignTimeCreatable=True}"
     Title="MainWindow" Width="300" Height="200" Icon="Icon.ico">
+    <FrameworkElement.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}"/>
+        <vk:SwitchCaseConverter x:Key="SwitchCaseConverter">
+            <vk:SwitchCaseConverterItem Case="{vk:Boolean true}" Value="커맨드 버튼 클릭 가능합니다."/>
+            <vk:SwitchCaseConverterItem Case="{vk:Boolean false}" Value="커맨드 버튼이 비활성화 상태입니다."/>
+        </vk:SwitchCaseConverter>
+    </FrameworkElement.Resources>
     <Grid>
-        <FrameworkElement.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Setter Property="Margin" Value="3"/>
-                <Setter Property="Padding" Value="10"/>
-            </Style>
-        </FrameworkElement.Resources>
         <Viewbox>
             <Grid Margin="3" Width="300">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -43,9 +45,9 @@
                 </StackPanel>
 
                 <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="커맨드 활성화" IsChecked="{Binding IsEnabledCommands}" HorizontalAlignment="Center"/>
-
                 <Button Grid.Row="2" Grid.Column="0" Content="증가" Command="{Binding IncreaseCommand}"/>
                 <Button Grid.Row="2" Grid.Column="1" Content="감소" Command="{Binding DecreaseCommand}"/>
+                <Label Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding IsEnabledCommands, Converter={StaticResource SwitchCaseConverter}}" HorizontalContentAlignment="Center"/>
             </Grid>
         </Viewbox>
     </Grid>

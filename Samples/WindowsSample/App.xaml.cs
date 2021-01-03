@@ -11,9 +11,5 @@ namespace WindowsSample
 {
     public partial class App : Application
     {
-        public App()
-        {
-            VagabondK.ThemeManager.AppThemeName = "Dark";
-        }
     }
 }

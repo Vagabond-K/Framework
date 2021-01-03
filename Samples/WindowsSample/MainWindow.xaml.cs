@@ -20,7 +20,7 @@ namespace WindowsSample
         public MainWindow()
         {
             InitializeComponent();
-
+            
             DataContext = new ViewModels.MainViewModel();
         }
     }

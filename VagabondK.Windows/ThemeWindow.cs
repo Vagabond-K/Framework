@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shell;
@@ -15,7 +16,7 @@ namespace VagabondK
     /// <summary>
     /// 테마가 적용된 윈도우
     /// </summary>
-    [TemplatePart(Name= "PART_MinimizeButton", Type= typeof(Button))]
+    [TemplatePart(Name = "PART_MinimizeButton", Type= typeof(Button))]
     [TemplatePart(Name = "PART_MaximizeButton", Type= typeof(Button))]
     [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
     public class ThemeWindow : Window
@@ -75,6 +76,27 @@ namespace VagabondK
                 this.closeButton.Click += Close_Click;
             }
         }
+
+
+
+        /// <summary>
+        /// 클라이언트 영역 배경
+        /// </summary>
+        public Brush ClientBackground
+        {
+            get { return (Brush)GetValue(ClientBackgroundProperty); }
+            set { SetValue(ClientBackgroundProperty, value); }
+        }
+
+        /// <summary>
+        /// 클라이언트 영역 배경 속성
+        /// </summary>
+        public static readonly DependencyProperty ClientBackgroundProperty =
+            DependencyProperty.Register("ClientBackground", typeof(Brush), typeof(ThemeWindow), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
+
+
+
+
 
         void Window_SourceInitialized(object sender, EventArgs e)
         {
