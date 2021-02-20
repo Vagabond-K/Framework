@@ -16,9 +16,6 @@ namespace VagabondK
     /// <summary>
     /// 테마가 적용된 윈도우
     /// </summary>
-    [TemplatePart(Name = "PART_MinimizeButton", Type= typeof(Button))]
-    [TemplatePart(Name = "PART_MaximizeButton", Type= typeof(Button))]
-    [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
     public class ThemeWindow : Window
     {
         static ThemeWindow()
@@ -48,36 +45,6 @@ namespace VagabondK
             SourceInitialized += Window_SourceInitialized;
         }
 
-        private Button minimizeButton;
-        private Button maximizeButton;
-        private Button closeButton;
-
-        /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal
-        /// processes call System.Windows.FrameworkElement.ApplyTemplate.
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            if (Template.FindName("PART_MinimizeButton", this) is Button minimizeButton)
-            {
-                this.minimizeButton = minimizeButton;
-                this.minimizeButton.Click += Minimize_Click;
-            }
-            if (Template.FindName("PART_MaximizeButton", this) is Button maximizeButton)
-            {
-                this.maximizeButton = maximizeButton;
-                this.maximizeButton.Click += Maximize_Click;
-            }
-            if (Template.FindName("PART_CloseButton", this) is Button closeButton)
-            {
-                this.closeButton = closeButton;
-                this.closeButton.Click += Close_Click;
-            }
-        }
-
-
 
         /// <summary>
         /// 클라이언트 영역 배경
@@ -96,8 +63,6 @@ namespace VagabondK
 
 
 
-
-
         void Window_SourceInitialized(object sender, EventArgs e)
         {
             IntPtr handle = new WindowInteropHelper(this).Handle;
@@ -113,31 +78,8 @@ namespace VagabondK
                     handled = true;
                     break;
             }
-
-            return (IntPtr)0;
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void Maximize_Click(object sender, RoutedEventArgs e)
-        {
-            switch (WindowState)
-            {
-                case WindowState.Maximized:
-                    WindowState = WindowState.Normal;
-                    break;
-                case WindowState.Normal:
-                    WindowState = WindowState.Maximized;
-                    break;
-            }
+            
+            return IntPtr.Zero;
         }
 
         [DllImport("user32")]

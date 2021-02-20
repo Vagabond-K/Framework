@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace System
 {
@@ -160,7 +161,7 @@ namespace System
         /// <param name="executeAction">커맨드 실행 Action</param>
         /// <param name="propertyName">속성 명</param>
         /// <returns>커맨드</returns>
-        protected InstantCommand Get(Action executeAction, [CallerMemberName] string propertyName = null)
+        protected InstantCommand GetCommand(Action executeAction, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand(executeAction), propertyName);
 
         /// <summary>
@@ -170,7 +171,7 @@ namespace System
         /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
         /// <param name="propertyName"></param>
         /// <returns>커맨드</returns>
-        protected InstantCommand Get(Action executeAction, Func<bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+        protected InstantCommand GetCommand(Action executeAction, Func<bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand(executeAction, canExecuteFunc), propertyName);
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace System
         /// <param name="executeAction">커맨드 실행 Action</param>
         /// <param name="propertyName">속성 명</param>
         /// <returns>커맨드</returns>
-        protected InstantCommand<TParameter> Get<TParameter>(Action<TParameter> executeAction, [CallerMemberName] string propertyName = null)
+        protected InstantCommand<TParameter> GetCommand<TParameter>(Action<TParameter> executeAction, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand<TParameter>(executeAction), propertyName);
 
         /// <summary>
@@ -191,9 +192,8 @@ namespace System
         /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
         /// <param name="propertyName"></param>
         /// <returns>커맨드</returns>
-        protected InstantCommand<TParameter> Get<TParameter>(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+        protected InstantCommand<TParameter> GetCommand<TParameter>(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand<TParameter>(executeAction, canExecuteFunc), propertyName);
-
 
         /// <summary>
         /// 속성 값 설정하기

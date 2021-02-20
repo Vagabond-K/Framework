@@ -27,7 +27,7 @@ namespace WindowsSample.ViewModels
 
         public IInstantCommand IncreaseCommand
         {
-            get => Get(() =>
+            get => GetCommand(() =>
             {
                 Int32Value += 1;
                 FloatValue += 0.1;
@@ -37,7 +37,7 @@ namespace WindowsSample.ViewModels
 
         public IInstantCommand DecreaseCommand
         {
-            get => Get(() =>
+            get => GetCommand(() =>
             {
                 Int32Value -= 1;
                 FloatValue -= 0.1;

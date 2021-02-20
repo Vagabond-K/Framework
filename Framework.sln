@@ -11,7 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK.Windows", "Vagabo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsSample", "Samples\WindowsSample\WindowsSample.csproj", "{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsSample_net45", "Samples\WindowsSample_net45\WindowsSample_net45.csproj", "{1693EDEA-06DC-4880-B45A-3E6D216110F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK.DependencyInjection", "VagabondK.DependencyInjection\VagabondK.DependencyInjection.csproj", "{239E8100-81CA-4B44-BA8E-6CF431430387}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK.App", "VagabondK.App\VagabondK.App.csproj", "{EFC32580-1DA2-460C-A407-FF8C8E9E3170}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSample", "Samples\AppSample\AppSample.csproj", "{3611E32D-590C-4280-BA02-5AA274269D71}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VagabondK.App.Windows", "VagabondK.App.Windows\VagabondK.App.Windows.csproj", "{E452DAF6-2337-4FB2-BFE6-1107776B632B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsSample_net461", "Samples\WindowsSample_net461\WindowsSample_net461.csproj", "{1693EDEA-06DC-4880-B45A-3E6D216110F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +39,22 @@ Global
 		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{239E8100-81CA-4B44-BA8E-6CF431430387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{239E8100-81CA-4B44-BA8E-6CF431430387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{239E8100-81CA-4B44-BA8E-6CF431430387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{239E8100-81CA-4B44-BA8E-6CF431430387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC32580-1DA2-460C-A407-FF8C8E9E3170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC32580-1DA2-460C-A407-FF8C8E9E3170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC32580-1DA2-460C-A407-FF8C8E9E3170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC32580-1DA2-460C-A407-FF8C8E9E3170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3611E32D-590C-4280-BA02-5AA274269D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3611E32D-590C-4280-BA02-5AA274269D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3611E32D-590C-4280-BA02-5AA274269D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3611E32D-590C-4280-BA02-5AA274269D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E452DAF6-2337-4FB2-BFE6-1107776B632B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E452DAF6-2337-4FB2-BFE6-1107776B632B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E452DAF6-2337-4FB2-BFE6-1107776B632B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E452DAF6-2337-4FB2-BFE6-1107776B632B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1693EDEA-06DC-4880-B45A-3E6D216110F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +65,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{319B6C23-7F09-4AD5-96DA-5569E3EA6B06} = {665FD0EA-83A7-4BA2-B722-85D637824FD7}
+		{3611E32D-590C-4280-BA02-5AA274269D71} = {665FD0EA-83A7-4BA2-B722-85D637824FD7}
 		{1693EDEA-06DC-4880-B45A-3E6D216110F8} = {665FD0EA-83A7-4BA2-B722-85D637824FD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
