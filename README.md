@@ -6,4 +6,4 @@
 >속성 변경 이벤트 관련 기능과 간소화된 즉석 커맨드 등을 지원합니다.
 
 >## VagabondK.Windows [![NuGet](https://img.shields.io/nuget/v/VagabondK.Windows.svg)](https://www.nuget.org/packages/VagabondK.Windows/)   
->간단한 검정색 계통 테마를 지원합니다.
+>간단한 검정색 계통 테마와 MVVM을 위한 컨버터들을 지원합니다.
