@@ -10,7 +10,7 @@ namespace VagabondK
     /// <summary>
     /// 페이지 컨텍스트
     /// </summary>
-    public class PageContext : IServiceScope, INotifyPropertyChanged
+    public class PageContext : IDisposable, INotifyPropertyChanged
     {
         private bool isDisposed;
 
@@ -22,7 +22,7 @@ namespace VagabondK
             if (!isDisposed)
             {
                 isDisposed = true;
-                serviceScope.Dispose();
+                serviceScope?.Dispose();
                 serviceScope = null;
             }
             GC.SuppressFinalize(this);
@@ -30,22 +30,11 @@ namespace VagabondK
 
         internal IServiceScope serviceScope;
 
-        private IServiceProvider rootServiceProvider;
         private object view;
         private object viewModel;
         private string title;
         private bool? result;
         private PageContext owner;
-
-        /// <summary>
-        /// 최 상위 서비스 공급자
-        /// </summary>
-        public IServiceProvider RootServiceProvider { get => rootServiceProvider; internal set => rootServiceProvider = value; }
-
-        /// <summary>
-        /// Scope 영역 서비스 공급자
-        /// </summary>
-        public IServiceProvider ServiceProvider => serviceScope?.ServiceProvider;
 
         /// <summary>
         /// 속성 값이 변경될 때 발생합니다.

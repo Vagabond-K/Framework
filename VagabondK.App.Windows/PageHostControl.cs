@@ -18,9 +18,8 @@ namespace VagabondK
         /// </summary>
         public PageHostControl()
         {
-            FocusableProperty.OverrideMetadata(typeof(PageHostControl), new FrameworkPropertyMetadata(false));
-
             SetBinding(ContentProperty, nameof(PageContext.View));
+            Focusable = false;
         }
         
         /// <summary>

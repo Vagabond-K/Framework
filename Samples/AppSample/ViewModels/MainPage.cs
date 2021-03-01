@@ -10,14 +10,19 @@ using VagabondK;
 namespace AppSample.ViewModels
 {
     [ServiceDescription]
-    public class MainPage : NotifyPropertyChangeObject
+    public class MainPage : NotifyPropertyChangeObject, INotifyLoaded
     {
-        public MainPage(PageContext pageContext)
+        public MainPage(IServiceProvider serviceProvider)
         {
-            this.pageContext = pageContext;
+            this.serviceProvider = serviceProvider;
         }
 
-        private readonly PageContext pageContext;
+        private readonly IServiceProvider serviceProvider;
+
+        public async void OnLoaded()
+        {
+            //await serviceProvider.ShowMessageBox("메인 페이지 로드 완료!", "알림", MessageBoxButton.OK, MessageImage.Information);
+        }
 
         public SmsSetting SmsSetting { get => Get(() => new SmsSetting()); }
 
@@ -25,7 +30,7 @@ namespace AppSample.ViewModels
         {
             get => GetCommand(async () =>
             {
-                if (await pageContext.ServiceProvider.ShowDialog<SmsSettingDialog, Views.SmsSettingDialogView>("SMS ettings", out var result) == true)
+                if (await serviceProvider.ShowDialog<SmsSettingDialog, Views.SmsSettingDialogView>("SMS ettings", out var result) == true)
                 {
                     SmsSetting.ServiceID = result.SmsSetting.ServiceID;
                     SmsSetting.AccessKeyID = result.SmsSetting.AccessKeyID;

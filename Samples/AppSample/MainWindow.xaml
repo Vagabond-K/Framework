@@ -8,5 +8,5 @@
     xmlns:local="clr-namespace:AppSample"
     mc:Ignorable="d"
     Title="{Binding SelectedPageContext.Title, StringFormat={}App Sample - {0}}" Height="450" Width="800">
-    <vk:PageHostControl DataContext="{Binding SelectedPageContext}"/>
+    <vk:PageHostControl Grid.Row="1" DataContext="{Binding SelectedPageContext}"/>
 </vk:ThemeWindow>

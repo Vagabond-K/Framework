@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,159 +18,182 @@ namespace VagabondK
     public class Dialog : IDialog
     {
         /// <summary>
+        /// 생성자
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        public Dialog(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
+        private readonly IServiceProvider serviceProvider;
+
+        /// <summary>
         /// 대화상자 표시
         /// </summary>
-        /// <param name="pageContext">페이지 컨텍스트</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="viewType">대화상자 뷰 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public Task<bool?> ShowDialog(PageContext pageContext)
+        public Task<bool?> ShowDialog(Type viewModelType, Type viewType, string title, Action<object, object> initializer, out object viewModel)
         {
-            var owner = pageContext.Owner?.View is DependencyObject dependencyObject ? Window.GetWindow(dependencyObject) : Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive) ?? Application.Current.MainWindow;
-
-            if (owner?.IsLoaded != true)
-                owner = null;
-
-            if (!(pageContext.View is Window dialogWindow))
+            using (var pageScope = serviceProvider.CreatePageScope(viewModelType, viewType, title))
             {
-                dialogWindow = new ThemeWindow
+                var pageContext = pageScope.ServiceProvider.GetService<PageContext>();
+                initializer?.Invoke(pageContext.ViewModel, pageContext.View);
+
+                var owner = pageContext.Owner?.View is DependencyObject dependencyObject ? Window.GetWindow(dependencyObject) : Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive) ?? Application.Current.MainWindow;
+
+                if (owner?.IsLoaded != true)
+                    owner = null;
+
+                if (!(pageContext.View is Window dialogWindow))
                 {
-                    SizeToContent = SizeToContent.WidthAndHeight
-                };
-
-                dialogWindow.SetBinding(Window.TitleProperty, nameof(pageContext.Title));
-                dialogWindow.SetBinding(ContentControl.ContentProperty, nameof(pageContext.View));
-                dialogWindow.SetBinding(Window.ResizeModeProperty, new Binding { Path = new PropertyPath($"{nameof(pageContext.View)}.(0)", ResizeModeProperty) });
-                dialogWindow.SetBinding(Window.ShowInTaskbarProperty, new Binding { Path = new PropertyPath($"{nameof(pageContext.View)}.(0)", ShowInTaskbarProperty) });
-                
-                if (owner != null)
-                    dialogWindow.SetBinding(Window.IconProperty, new Binding(nameof(owner.Icon)) { Source = owner });
-
-                (pageContext.View as FrameworkElement)?.SetBinding(FrameworkElement.DataContextProperty, nameof(pageContext.ViewModel));
-                (pageContext.View as FrameworkContentElement)?.SetBinding(FrameworkContentElement.DataContextProperty, nameof(pageContext.ViewModel));
-
-                dialogWindow.DataContext = pageContext;
-            }
-            else
-            {
-                dialogWindow.DataContext = pageContext.ViewModel;
-            }
-
-            dialogWindow.Owner = owner;
-            dialogWindow.WindowStartupLocation = owner == null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner;
-            pageContext.Result = null;
-
-            bool canHandled = true;
-            IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-            {
-                switch (msg)
-                {
-                    case 0x0020:
-                        if (canHandled)
-                        {
-                            owner.CaptureMouse();
-                            owner.ReleaseMouseCapture();
-                            canHandled = false;
-                        }
-                        else
-                        {
-                            canHandled = true;
-                        }
-                        break;
-                }
-
-                return IntPtr.Zero;
-            }
-
-            void OnViewScopePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName == nameof(PageContext.Result) && pageContext.Result != null)
-                {
-                    dialogWindow.DialogResult = pageContext.Result;
-                }
-            }
-
-            void OnLoaded(object sender, RoutedEventArgs e)
-            {
-                if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
-                {
-                    IntPtr handle = new WindowInteropHelper(owner).Handle;
-                    HwndSource.FromHwnd(handle)?.AddHook(WindowProc);
-                }
-
-                (pageContext.ViewModel as INotifyLoaded)?.OnLoaded();
-            }
-
-            void OnSourceInitialized(object sender, EventArgs e)
-            {
-                if (pageContext.View != dialogWindow)
-                {
-                    if (pageContext.View is FrameworkElement frameworkElement)
+                    dialogWindow = new ThemeWindow
                     {
-                        if (!double.IsNaN(frameworkElement.Width))
-                        {
-                            dialogWindow.Width = dialogWindow.ActualWidth;
-                            frameworkElement.ClearValue(FrameworkElement.WidthProperty);
-                        }
-                        if (!double.IsNaN(frameworkElement.Height))
-                        {
-                            dialogWindow.Height = dialogWindow.ActualHeight;
-                            frameworkElement.ClearValue(FrameworkElement.HeightProperty);
-                        }
+                        SizeToContent = SizeToContent.WidthAndHeight
+                    };
 
-                        var point1 = frameworkElement.TranslatePoint(new Point(0, 0), dialogWindow);
-                        var point2 = frameworkElement.TranslatePoint(new Point(frameworkElement.ActualWidth, frameworkElement.ActualHeight), dialogWindow);
+                    dialogWindow.SetBinding(Window.TitleProperty, nameof(pageContext.Title));
+                    dialogWindow.SetBinding(ContentControl.ContentProperty, nameof(pageContext.View));
+                    dialogWindow.SetBinding(Window.ResizeModeProperty, new Binding { Path = new PropertyPath($"{nameof(pageContext.View)}.(0)", ResizeModeProperty) });
+                    dialogWindow.SetBinding(Window.ShowInTaskbarProperty, new Binding { Path = new PropertyPath($"{nameof(pageContext.View)}.(0)", ShowInTaskbarProperty) });
 
-                        var borderWidth = point1.X + (dialogWindow.ActualWidth - point2.X);
-                        var borderHeight = point1.Y + (dialogWindow.ActualHeight - point2.Y);
+                    if (owner != null)
+                        dialogWindow.SetBinding(Window.IconProperty, new Binding(nameof(owner.Icon)) { Source = owner });
 
-                        dialogWindow.MinWidth = frameworkElement.MinWidth + borderWidth;
-                        dialogWindow.MinHeight = frameworkElement.MinHeight + borderHeight;
-                        if (!double.IsInfinity(frameworkElement.MaxWidth))
-                            dialogWindow.MaxWidth = frameworkElement.MaxWidth + borderWidth;
-                        if (!double.IsInfinity(frameworkElement.MaxHeight))
-                            dialogWindow.MaxHeight = frameworkElement.MaxHeight + borderHeight;
+                    (pageContext.View as FrameworkElement)?.SetBinding(FrameworkElement.DataContextProperty, nameof(pageContext.ViewModel));
+                    (pageContext.View as FrameworkContentElement)?.SetBinding(FrameworkContentElement.DataContextProperty, nameof(pageContext.ViewModel));
 
-                        frameworkElement.MinWidth = 0;
-                        frameworkElement.MinHeight = 0;
-                        frameworkElement.MaxWidth = double.PositiveInfinity;
-                        frameworkElement.MaxHeight = double.PositiveInfinity;
+                    dialogWindow.DataContext = pageContext;
+                }
+                else
+                {
+                    dialogWindow.DataContext = pageContext.ViewModel;
+                }
+
+                dialogWindow.Owner = owner;
+                dialogWindow.WindowStartupLocation = owner == null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner;
+                pageContext.Result = null;
+
+                bool canHandled = true;
+                IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+                {
+                    switch (msg)
+                    {
+                        case 0x0020:
+                            if (canHandled)
+                            {
+                                owner.CaptureMouse();
+                                owner.ReleaseMouseCapture();
+                                canHandled = false;
+                            }
+                            else
+                            {
+                                canHandled = true;
+                            }
+                            break;
+                    }
+
+                    return IntPtr.Zero;
+                }
+
+                void OnViewScopePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+                {
+                    if (e.PropertyName == nameof(PageContext.Result) && pageContext.Result != null)
+                    {
+                        dialogWindow.DialogResult = pageContext.Result;
                     }
                 }
 
-                if (dialogWindow.ResizeMode == ResizeMode.CanResize
-                    || dialogWindow.ResizeMode == ResizeMode.CanResizeWithGrip)
-                    dialogWindow.SizeToContent = SizeToContent.Manual;
-            }
-
-            async void Closing(object sender, System.ComponentModel.CancelEventArgs e)
-            {
-                e.Cancel = await (pageContext.ViewModel as IQueryClosing)?.QueryClosing(dialogWindow.DialogResult ?? false) == false;
-            }
-
-            void OnClosed(object sender, EventArgs e)
-            {
-                pageContext.PropertyChanged -= OnViewScopePropertyChanged;
-                dialogWindow.Loaded -= OnLoaded;
-                dialogWindow.SourceInitialized -= OnSourceInitialized;
-                dialogWindow.Closed -= OnClosed;
-                dialogWindow.Closing -= Closing;
-
-                if (pageContext.Result == null)
-                    pageContext.Result = dialogWindow.DialogResult;
-
-                if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
+                void OnLoaded(object sender, RoutedEventArgs e)
                 {
-                    IntPtr handle = new WindowInteropHelper(owner).Handle;
-                    HwndSource.FromHwnd(handle)?.RemoveHook(WindowProc);
+                    if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
+                    {
+                        IntPtr handle = new WindowInteropHelper(owner).Handle;
+                        HwndSource.FromHwnd(handle)?.AddHook(WindowProc);
+                    }
+
+                    (pageContext.ViewModel as INotifyLoaded)?.OnLoaded();
                 }
+
+                void OnSourceInitialized(object sender, EventArgs e)
+                {
+                    if (pageContext.View != dialogWindow)
+                    {
+                        if (pageContext.View is FrameworkElement frameworkElement)
+                        {
+                            if (!double.IsNaN(frameworkElement.Width))
+                            {
+                                dialogWindow.Width = dialogWindow.ActualWidth;
+                                frameworkElement.ClearValue(FrameworkElement.WidthProperty);
+                            }
+                            if (!double.IsNaN(frameworkElement.Height))
+                            {
+                                dialogWindow.Height = dialogWindow.ActualHeight;
+                                frameworkElement.ClearValue(FrameworkElement.HeightProperty);
+                            }
+
+                            var point1 = frameworkElement.TranslatePoint(new Point(0, 0), dialogWindow);
+                            var point2 = frameworkElement.TranslatePoint(new Point(frameworkElement.ActualWidth, frameworkElement.ActualHeight), dialogWindow);
+
+                            var borderWidth = point1.X + (dialogWindow.ActualWidth - point2.X);
+                            var borderHeight = point1.Y + (dialogWindow.ActualHeight - point2.Y);
+
+                            dialogWindow.MinWidth = frameworkElement.MinWidth + borderWidth;
+                            dialogWindow.MinHeight = frameworkElement.MinHeight + borderHeight;
+                            if (!double.IsInfinity(frameworkElement.MaxWidth))
+                                dialogWindow.MaxWidth = frameworkElement.MaxWidth + borderWidth;
+                            if (!double.IsInfinity(frameworkElement.MaxHeight))
+                                dialogWindow.MaxHeight = frameworkElement.MaxHeight + borderHeight;
+
+                            frameworkElement.MinWidth = 0;
+                            frameworkElement.MinHeight = 0;
+                            frameworkElement.MaxWidth = double.PositiveInfinity;
+                            frameworkElement.MaxHeight = double.PositiveInfinity;
+                        }
+                    }
+
+                    if (dialogWindow.ResizeMode == ResizeMode.CanResize
+                        || dialogWindow.ResizeMode == ResizeMode.CanResizeWithGrip)
+                        dialogWindow.SizeToContent = SizeToContent.Manual;
+                }
+
+                async void Closing(object sender, System.ComponentModel.CancelEventArgs e)
+                {
+                    e.Cancel = await (pageContext.ViewModel as IQueryClosing)?.QueryClosing(dialogWindow.DialogResult ?? false) == false;
+                }
+
+                void OnClosed(object sender, EventArgs e)
+                {
+                    pageContext.PropertyChanged -= OnViewScopePropertyChanged;
+                    dialogWindow.Loaded -= OnLoaded;
+                    dialogWindow.SourceInitialized -= OnSourceInitialized;
+                    dialogWindow.Closed -= OnClosed;
+                    dialogWindow.Closing -= Closing;
+
+                    if (pageContext.Result == null)
+                        pageContext.Result = dialogWindow.DialogResult;
+
+                    if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
+                    {
+                        IntPtr handle = new WindowInteropHelper(owner).Handle;
+                        HwndSource.FromHwnd(handle)?.RemoveHook(WindowProc);
+                    }
+                }
+
+                pageContext.PropertyChanged += OnViewScopePropertyChanged;
+                dialogWindow.Loaded += OnLoaded;
+                dialogWindow.SourceInitialized += OnSourceInitialized;
+                dialogWindow.Closing += Closing;
+                dialogWindow.Closed += OnClosed;
+
+                viewModel = pageContext.ViewModel;
+
+                return Task.FromResult(dialogWindow.ShowDialog());
             }
-
-            pageContext.PropertyChanged += OnViewScopePropertyChanged;
-            dialogWindow.Loaded += OnLoaded;
-            dialogWindow.SourceInitialized += OnSourceInitialized;
-            dialogWindow.Closing += Closing;
-            dialogWindow.Closed += OnClosed;
-
-            return Task.FromResult(dialogWindow.ShowDialog());
         }
 
 

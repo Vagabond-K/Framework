@@ -14,50 +14,50 @@ namespace VagabondK
     public static class ServiceProviderExtensions
     {
         /// <summary>
-        /// 페이지 컨텍스트 생성
+        /// 응용프로그램 페이지 Scope 생성
         /// </summary>
         /// <param name="serviceProvider">페이지 공급자</param>
         /// <param name="viewModelTypeName">페이지 뷰 모델 형식 이름</param>
         /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <param name="title">페이지 제목</param>
-        /// <returns>페이지 컨텍스트</returns>
-        public static PageContext CreatePageContext(this IServiceProvider serviceProvider, string viewModelTypeName, string viewTypeName, string title) => CreatePageContext(serviceProvider, Type.GetType(viewModelTypeName), Type.GetType(viewTypeName), title);
+        /// <returns>응용프로그램 페이지 Scope</returns>
+        public static IServiceScope CreatePageScope(this IServiceProvider serviceProvider, string viewModelTypeName, string viewTypeName, string title) => CreatePageScope(serviceProvider, Type.GetType(viewModelTypeName), Type.GetType(viewTypeName), title);
 
         /// <summary>
-        /// 페이지 컨텍스트 생성
+        /// 응용프로그램 페이지 Scope 생성
         /// </summary>
         /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">페이지 공급자</param>
         /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <param name="title">페이지 제목</param>
-        /// <returns>페이지 컨텍스트</returns>
-        public static PageContext CreatePageContext<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title) => CreatePageContext(serviceProvider, typeof(TViewModel), Type.GetType(viewTypeName), title);
+        /// <returns>응용프로그램 페이지 Scope</returns>
+        public static IServiceScope CreatePageScope<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title) => CreatePageScope(serviceProvider, typeof(TViewModel), Type.GetType(viewTypeName), title);
 
         /// <summary>
-        /// 페이지 컨텍스트 생성
+        /// 응용프로그램 페이지 Scope 생성
         /// </summary>
         /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
         /// <typeparam name="TView">페이지 뷰 형식</typeparam>
         /// <param name="serviceProvider">페이지 공급자</param>
         /// <param name="title">페이지 제목</param>
-        /// <returns>페이지 컨텍스트</returns>
-        public static PageContext CreatePageContext<TViewModel, TView>(this IServiceProvider serviceProvider, string title) => CreatePageContext(serviceProvider, typeof(TViewModel), typeof(TView), title);
+        /// <returns>응용프로그램 페이지 Scope</returns>
+        public static IServiceScope CreatePageScope<TViewModel, TView>(this IServiceProvider serviceProvider, string title) => CreatePageScope(serviceProvider, typeof(TViewModel), typeof(TView), title);
 
         /// <summary>
-        /// 페이지 컨텍스트 생성
+        /// 응용프로그램 페이지 Scope 생성
         /// </summary>
         /// <param name="serviceProvider">페이지 공급자</param>
         /// <param name="viewModelType">페이지 뷰 모델 형식</param>
         /// <param name="viewType">페이지 뷰 형식</param>
         /// <param name="title">페이지 제목</param>
-        /// <returns>페이지 컨텍스트</returns>
-        public static PageContext CreatePageContext(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, string title)
+        /// <returns>응용프로그램 페이지 Scope</returns>
+        public static IServiceScope CreatePageScope(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, string title)
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (viewModelType == null) throw new ArgumentNullException(nameof(viewModelType));
             if (viewType == null) throw new ArgumentNullException(nameof(viewType));
 
-            var owner = serviceProvider.GetService<IServiceScope>() != null ? serviceProvider.GetService<PageContext>() : null;
+            var owner = serviceProvider.GetService<PageContext>();
 
             var serviceScope = serviceProvider.CreateScope();
             var pageContext = serviceScope.ServiceProvider.GetService<PageContext>();
@@ -68,26 +68,25 @@ namespace VagabondK
             pageContext.Title = title;
 
             pageContext.Owner = owner;
-            pageContext.RootServiceProvider = owner?.RootServiceProvider ?? serviceProvider;
 
-            return pageContext;
+            return serviceScope;
         }
 
         /// <summary>
-        /// 페이지 컨텍스트 생성
+        /// 응용프로그램 페이지 Scope 생성
         /// </summary>
         /// <typeparam name="TPageData">페이지 데이터 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="pageData">페이지 데이터</param>
-        /// <returns>페이지 컨텍스트</returns>
-        public static PageContext<TPageData> CreatePageContext<TPageData>(this IServiceProvider serviceProvider, TPageData pageData) where TPageData : IPageData
+        /// <returns>응용프로그램 페이지 Scope</returns>
+        public static IServiceScope CreatePageScope<TPageData>(this IServiceProvider serviceProvider, TPageData pageData) where TPageData : IPageData
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (pageData == null) throw new ArgumentNullException(nameof(pageData));
             var viewModelType = Type.GetType(pageData.ViewModelTypeName) ?? throw new TypeLoadException(pageData.ViewModelTypeName);
             var viewType = Type.GetType(pageData.ViewTypeName) ?? throw new TypeLoadException(nameof(pageData.ViewTypeName));
 
-            var owner = serviceProvider.GetService<IServiceScope>() != null ? serviceProvider.GetService<PageContext>() : null;
+            var owner = serviceProvider.GetService<PageContext>();
 
             var serviceScope = serviceProvider.CreateScope();
             var pageContext = serviceScope.ServiceProvider.GetService<PageContext<TPageData>>();
@@ -98,9 +97,8 @@ namespace VagabondK
             pageContext.PageData = pageData;
 
             pageContext.Owner = owner;
-            pageContext.RootServiceProvider = owner?.RootServiceProvider ?? serviceProvider;
 
-            return pageContext;
+            return serviceScope;
         }
     }
 }

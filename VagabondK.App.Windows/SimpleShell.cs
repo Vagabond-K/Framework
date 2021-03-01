@@ -30,7 +30,8 @@ namespace VagabondK
         /// <returns>페이지 컨텍스트</returns>
         public override Task<PageContext> OpenPage(Type viewModelType, Type viewType, string title)
         {
-            var pageContext = ShellServiceProvider.CreatePageContext(viewModelType, viewType, title);
+            var pageScope = ShellServiceProvider.CreatePageScope(viewModelType, viewType, title);
+            var pageContext = pageScope.ServiceProvider.GetService<PageContext>();
 
             var oldPageContext = SelectedPageContext;
 
@@ -65,7 +66,7 @@ namespace VagabondK
         /// <param name="title">페이지 제목</param>
         /// <returns>페이지 컨텍스트</returns>
         public override Task<PageContext> OpenPage(Type viewModelType, Type viewType, string title)
-            => Task.FromResult(SetSelectedPageContext(ShellServiceProvider.CreatePageContext(viewModelType, viewType, title)));
+            => Task.FromResult(SetSelectedPageContext(ShellServiceProvider.CreatePageScope(viewModelType, viewType, title).ServiceProvider.GetService<PageContext>()));
 
         /// <summary>
         /// 페이지 열기
@@ -73,7 +74,7 @@ namespace VagabondK
         /// <param name="pageData">페이지 데이터</param>
         /// <returns>페이지 컨텍스트</returns>
         public override Task<PageContext<TPageData>> OpenPage(TPageData pageData)
-            => Task.FromResult(SetSelectedPageContext(ShellServiceProvider.CreatePageContext(pageData)));
+            => Task.FromResult(SetSelectedPageContext(ShellServiceProvider.CreatePageScope(pageData).ServiceProvider.GetService<PageContext<TPageData>>()));
 
         private TPageContext SetSelectedPageContext<TPageContext>(TPageContext pageContext) where TPageContext : PageContext
         {

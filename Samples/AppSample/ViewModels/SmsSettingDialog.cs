@@ -12,20 +12,18 @@ namespace AppSample.ViewModels
     [ServiceDescription]
     public class SmsSettingDialog : NotifyPropertyChangeObject, INotifyLoaded, IQueryClosing
     {
-        public SmsSettingDialog(IFocusHandler focusHandler, IMessageBox messageBox)
+        public SmsSettingDialog(IServiceProvider serviceProvider)
         {
-            this.focusHandler = focusHandler;
-            this.messageBox = messageBox;
+            this.serviceProvider = serviceProvider;
         }
 
-        private readonly IFocusHandler focusHandler;
-        private readonly IMessageBox messageBox;
+        private readonly IServiceProvider serviceProvider;
 
         public SmsSetting SmsSetting { get => Get(() => new SmsSetting()); }
 
         public void OnLoaded()
         {
-            focusHandler.Focus(nameof(SmsSetting.ServiceID));
+            serviceProvider.Focus(nameof(SmsSetting.ServiceID));
         }
 
         public async Task<bool> QueryClosing(bool result)
@@ -43,8 +41,8 @@ namespace AppSample.ViewModels
                 if (source.GetType().GetProperty(propertyName)?.GetValue(source) is string value
                     && string.IsNullOrWhiteSpace(value))
                 {
-                    focusHandler.Focus(propertyName);
-                    await messageBox.Show($"{propertyName} 누락.", "입력 오류", MessageBoxButton.OK, MessageImage.Error);
+                    serviceProvider.Focus(propertyName);
+                    await serviceProvider.ShowMessageBox($"{propertyName} 누락.", "입력 오류", MessageBoxButton.OK, MessageImage.Error);
                     return true;
                 }
             return false;
