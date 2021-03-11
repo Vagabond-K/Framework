@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK.App</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>그냥 Vagabond K가 개인적으로 편하게 코딩하려고 만든 App 라이브러리입니다.</Description>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageProjectUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK.App</PackageProjectUrl>
   </PropertyGroup>
 

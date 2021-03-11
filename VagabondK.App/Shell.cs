@@ -27,14 +27,6 @@ namespace VagabondK
             defaultServices.AddSingleton(this);
             defaultServices.AddSingleton(GetType(), this);
             defaultServices.AddScoped<PageContext>();
-
-            defaultServices.AddServices(typeof(Shell).Assembly);
-            var shellDefindedAssembly = GetType().Assembly;
-            if (shellDefindedAssembly != typeof(Shell).Assembly)
-                defaultServices.AddServices(GetType().Assembly);
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly != shellDefindedAssembly)
-                defaultServices.AddServices(entryAssembly);
         }
 
         internal readonly IServiceCollection defaultServices;

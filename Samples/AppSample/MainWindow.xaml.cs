@@ -29,10 +29,15 @@ namespace AppSample
             InitializeComponent();
 
             Loaded += MainWindow_Loaded;
+
+            ServiceCollection services = new ServiceCollection();
+            services.AddServices(typeof(Dialog).Assembly);
+            services.AddServices(typeof(MainWindow).Assembly);
+            shell = new SimpleShell(services);
             DataContext = shell;
         }
 
-        private readonly Shell shell = new SimpleShell(null);
+        private readonly Shell shell;
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {

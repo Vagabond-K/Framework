@@ -165,7 +165,8 @@ namespace VagabondK
 
                 async void Closing(object sender, System.ComponentModel.CancelEventArgs e)
                 {
-                    e.Cancel = await (pageContext.ViewModel as IQueryClosing)?.QueryClosing(dialogWindow.DialogResult ?? false) == false;
+                    if (pageContext.ViewModel is IQueryClosing queryClosing)
+                        e.Cancel = await queryClosing.QueryClosing(dialogWindow.DialogResult ?? false) == false;
                 }
 
                 void OnClosed(object sender, EventArgs e)
