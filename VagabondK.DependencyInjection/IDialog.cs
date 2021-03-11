@@ -133,7 +133,7 @@ namespace VagabondK
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Type viewType, Action<object, object> initializer)
-            => dialog.ShowDialog(viewModelType, viewType, (viewModel, view) => initializer?.Invoke(viewModel, view));
+            => dialog.ShowDialog(viewModelType, viewType, null, (viewModel, view) => initializer?.Invoke(viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -261,7 +261,7 @@ namespace VagabondK
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Type viewType, string title, Action<object, object> initializer)
-            => dialog.ShowDialog(viewModelType, viewType, title, (viewModel, view) => initializer?.Invoke(viewModel, view));
+            => dialog.ShowDialog(viewModelType, viewType, title, (viewModel, view) => initializer?.Invoke(viewModel, view), out var viewModelResult);
 
         /// <summary>
         /// 대화상자 표시
@@ -414,7 +414,7 @@ namespace VagabondK
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Type viewType, Action<object, object> initializer, out object viewModel)
         {
-            var task = dialog.ShowDialog(viewModelType, viewType, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
+            var task = dialog.ShowDialog(viewModelType, viewType, null, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
             viewModel = viewModelResult;
             return task;
         }
@@ -691,7 +691,7 @@ namespace VagabondK
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, Action<object, object> initializer)
-            => serviceProvider.ShowDialog(viewModelType, viewType, (viewModel, view) => initializer?.Invoke(viewModel, view));
+            => serviceProvider.ShowDialog(viewModelType, viewType, null, (viewModel, view) => initializer?.Invoke(viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -819,7 +819,7 @@ namespace VagabondK
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, string title, Action<object, object> initializer)
-            => serviceProvider.ShowDialog(viewModelType, viewType, title, (viewModel, view) => initializer?.Invoke(viewModel, view));
+            => serviceProvider.ShowDialog(viewModelType, viewType, title, (viewModel, view) => initializer?.Invoke(viewModel, view), out var viewModelResult);
 
         /// <summary>
         /// 대화상자 표시
@@ -972,7 +972,7 @@ namespace VagabondK
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, Action<object, object> initializer, out object viewModel)
         {
-            var task = serviceProvider.ShowDialog(viewModelType, viewType, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(viewModelType, viewType, null, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
             viewModel = viewModelResult;
             return task;
         }

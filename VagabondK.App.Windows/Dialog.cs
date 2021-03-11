@@ -74,7 +74,9 @@ namespace VagabondK
                     dialogWindow.DataContext = pageContext.ViewModel;
                 }
 
-                dialogWindow.Owner = owner;
+                if (dialogWindow != owner)
+                    dialogWindow.Owner = owner;
+
                 dialogWindow.WindowStartupLocation = owner == null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner;
                 pageContext.Result = null;
 
