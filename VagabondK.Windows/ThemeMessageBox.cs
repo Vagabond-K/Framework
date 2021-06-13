@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace VagabondK
+namespace VagabondK.Windows
 {
     /// <summary>
     /// 테마가 적용된 메시지 상자
@@ -227,17 +227,17 @@ namespace VagabondK
                 switch (button)
                 {
                     case MessageBoxButton.OK:
-                        this.button1.Content = VagabondK.Resources.ThemeMessageBox_Button_OK_Text;
+                        this.button1.Content = Windows.Resources.ThemeMessageBox_Button_OK_Text;
                         this.button1.Focus();
                         break;
                     case MessageBoxButton.OKCancel:
-                        this.button1.Content = VagabondK.Resources.ThemeMessageBox_Button_OK_Text;
+                        this.button1.Content = Windows.Resources.ThemeMessageBox_Button_OK_Text;
                         if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
                             this.button1.Focus();
                         break;
                     case MessageBoxButton.YesNo:
                     case MessageBoxButton.YesNoCancel:
-                        this.button1.Content = VagabondK.Resources.ThemeMessageBox_Button_Yes_Text;
+                        this.button1.Content = Windows.Resources.ThemeMessageBox_Button_Yes_Text;
                         if (result == MessageBoxResult.Yes || result == MessageBoxResult.None)
                             this.button1.Focus();
                         break;
@@ -254,13 +254,13 @@ namespace VagabondK
                         this.button2.Visibility = Visibility.Collapsed;
                         break;
                     case MessageBoxButton.OKCancel:
-                        this.button2.Content = VagabondK.Resources.ThemeMessageBox_Button_Cancel_Text;
+                        this.button2.Content = Windows.Resources.ThemeMessageBox_Button_Cancel_Text;
                         if (result == MessageBoxResult.Cancel)
                             this.button2.Focus();
                         break;
                     case MessageBoxButton.YesNo:
                     case MessageBoxButton.YesNoCancel:
-                        this.button2.Content = VagabondK.Resources.ThemeMessageBox_Button_No_Text;
+                        this.button2.Content = Windows.Resources.ThemeMessageBox_Button_No_Text;
                         if (result == MessageBoxResult.No)
                             this.button2.Focus();
                         break;
@@ -279,7 +279,7 @@ namespace VagabondK
                         this.button3.Visibility = Visibility.Collapsed;
                         break;
                     case MessageBoxButton.YesNoCancel:
-                        this.button3.Content = VagabondK.Resources.ThemeMessageBox_Button_Cancel_Text;
+                        this.button3.Content = Windows.Resources.ThemeMessageBox_Button_Cancel_Text;
                         if (result == MessageBoxResult.Cancel)
                             this.button3.Focus();
                         break;

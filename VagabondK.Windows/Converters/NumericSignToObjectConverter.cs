@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace VagabondK.Converters
+namespace VagabondK.Windows.Converters
 {
     /// <summary>
     /// 수치값의 부호에 따른 변환

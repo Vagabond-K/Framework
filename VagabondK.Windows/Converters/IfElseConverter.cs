@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace VagabondK.Converters
+namespace VagabondK.Windows.Converters
 {
     /// <summary>
     /// if else문과 같이 순차적으로 논리값을 확인하여 결과를 반환

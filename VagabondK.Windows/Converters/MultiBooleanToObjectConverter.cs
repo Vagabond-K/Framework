@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace VagabondK.Converters
+namespace VagabondK.Windows.Converters
 {
     /// <summary>
     /// 여러 Boolean 상태들을 조합 결과로 변환

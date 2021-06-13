@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 메시지 상자 또는 메시지 알림에 표시되는 아이콘을 지정합니다.

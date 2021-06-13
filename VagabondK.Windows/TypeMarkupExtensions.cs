@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
-namespace VagabondK
+namespace VagabondK.Windows
 {
     /// <summary>
     /// Boolean 타입 태그 확장

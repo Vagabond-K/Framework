@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     //public interface INavigationManager
     //{

@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace VagabondK.Converters
+namespace VagabondK.Windows.Converters
 {
     /// <summary>
     /// Boolean 상태를 Visibility로 변환

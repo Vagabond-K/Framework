@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 사용자가 클릭하는 메시지 상자 단추를 지정합니다.

@@ -45,8 +45,8 @@ namespace System
         /// <summary>
         /// PropertyChanging 이벤트를 발생시킴.
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
+        /// <param name="e">속성 변경 이벤트 처리 전에 취소 여부 질의가 가능하게 함.</param>
+        /// <returns>속성 변경 여부</returns>
         protected virtual bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
         {
             PropertyChanging?.Invoke(eventSource, e);
@@ -56,7 +56,7 @@ namespace System
         /// <summary>
         /// PropertyChanged 이벤트를 발생시킴.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">PropertyChanged 이벤트에 대한 데이터를 제공함.</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
             => PropertyChanged?.Invoke(eventSource, e);
 
@@ -169,7 +169,7 @@ namespace System
         /// </summary>
         /// <param name="executeAction">커맨드 실행 Action</param>
         /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
-        /// <param name="propertyName"></param>
+        /// <param name="propertyName">속성 명</param>
         /// <returns>커맨드</returns>
         protected InstantCommand GetCommand(Action executeAction, Func<bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand(executeAction, canExecuteFunc), propertyName);
@@ -190,7 +190,7 @@ namespace System
         /// <typeparam name="TParameter">파라미터 형식</typeparam>
         /// <param name="executeAction">커맨드 실행 Action</param>
         /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
-        /// <param name="propertyName"></param>
+        /// <param name="propertyName">속성 명</param>
         /// <returns>커맨드</returns>
         protected InstantCommand<TParameter> GetCommand<TParameter>(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
             => Get(() => new InstantCommand<TParameter>(executeAction, canExecuteFunc), propertyName);

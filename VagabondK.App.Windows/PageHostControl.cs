@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace VagabondK
+namespace VagabondK.App.Windows
 {
     /// <summary>
     /// 페이지 호스트 컨트롤

@@ -8,8 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interop;
+using VagabondK.Windows;
 
-namespace VagabondK
+namespace VagabondK.App.Windows
 {
     /// <summary>
     /// 대화상자 서비스
@@ -76,31 +77,11 @@ namespace VagabondK
 
                 if (dialogWindow != owner)
                     dialogWindow.Owner = owner;
+                else
+                    owner = null;
 
                 dialogWindow.WindowStartupLocation = owner == null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner;
                 pageContext.Result = null;
-
-                bool canHandled = true;
-                IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-                {
-                    switch (msg)
-                    {
-                        case 0x0020:
-                            if (canHandled)
-                            {
-                                owner.CaptureMouse();
-                                owner.ReleaseMouseCapture();
-                                canHandled = false;
-                            }
-                            else
-                            {
-                                canHandled = true;
-                            }
-                            break;
-                    }
-
-                    return IntPtr.Zero;
-                }
 
                 void OnViewScopePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
                 {
@@ -112,12 +93,6 @@ namespace VagabondK
 
                 void OnLoaded(object sender, RoutedEventArgs e)
                 {
-                    if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
-                    {
-                        IntPtr handle = new WindowInteropHelper(owner).Handle;
-                        HwndSource.FromHwnd(handle)?.AddHook(WindowProc);
-                    }
-
                     (pageContext.ViewModel as INotifyLoaded)?.OnLoaded();
                 }
 
@@ -179,12 +154,6 @@ namespace VagabondK
 
                     if (pageContext.Result == null)
                         pageContext.Result = dialogWindow.DialogResult;
-
-                    if (owner != null && dialogWindow.WindowStyle == WindowStyle.None)
-                    {
-                        IntPtr handle = new WindowInteropHelper(owner).Handle;
-                        HwndSource.FromHwnd(handle)?.RemoveHook(WindowProc);
-                    }
                 }
 
                 pageContext.PropertyChanged += OnViewScopePropertyChanged;

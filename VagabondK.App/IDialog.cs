@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 대화상자 서비스

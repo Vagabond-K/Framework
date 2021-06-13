@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 화면 로드 알림 인터페이스

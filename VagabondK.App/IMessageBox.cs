@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 메시지 상자 서비스

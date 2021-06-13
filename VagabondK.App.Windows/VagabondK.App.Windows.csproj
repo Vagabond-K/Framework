@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <RootNamespace>VagabondK</RootNamespace>
+    <RootNamespace>VagabondK.App.Windows</RootNamespace>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\VagabondK.App.Windows.xml</DocumentationFile>
     <Company>Vagabond K</Company>
     <Authors>Vagabond K</Authors>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK.App.Windows</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>그냥 Vagabond K가 개인적으로 편하게 코딩하려고 만든 Windows 운영체제용 App 라이브러리입니다.</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.5</Version>
     <PackageProjectUrl>https://github.com/Vagabond-K/Framework/tree/master/VagabondK.App.Windows</PackageProjectUrl>
   </PropertyGroup>
 

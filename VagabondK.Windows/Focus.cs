@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace VagabondK
+namespace VagabondK.Windows
 {
     /// <summary>
     /// 기본 포커스를 위한 확장 속성

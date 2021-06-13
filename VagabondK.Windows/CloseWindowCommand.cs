@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace VagabondK
+namespace VagabondK.Windows
 {
     /// <summary>
     /// 윈도우 닫기 커맨드

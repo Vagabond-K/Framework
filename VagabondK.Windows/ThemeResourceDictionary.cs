@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace VagabondK
+namespace VagabondK.Windows
 {
     /// <summary>
     /// 테마 리소스 사전

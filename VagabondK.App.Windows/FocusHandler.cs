@@ -9,7 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace VagabondK
+namespace VagabondK.App.Windows
 {
     /// <summary>
     /// 포커스 핸들러

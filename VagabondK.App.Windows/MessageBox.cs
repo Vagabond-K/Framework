@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using VagabondK.Windows;
 
-namespace VagabondK
+namespace VagabondK.App.Windows
 {
     /// <summary>
     /// 메시지 상자 관련 기능

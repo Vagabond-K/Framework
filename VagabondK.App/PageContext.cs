@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace VagabondK
+namespace VagabondK.App
 {
     /// <summary>
     /// 페이지 컨텍스트

@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace WindowsSample
 {
-    public partial class MainWindow : VagabondK.ThemeWindow
+    public partial class MainWindow : VagabondK.Windows.ThemeWindow
     {
         public MainWindow()
         {

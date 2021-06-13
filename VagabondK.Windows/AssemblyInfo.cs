@@ -10,5 +10,5 @@ using System.Windows.Markup;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsDefinition("http://schemas.vagabond-k.com/winfx/2016/xaml", "VagabondK")]
-[assembly: XmlnsDefinition("http://schemas.vagabond-k.com/winfx/2016/xaml", "VagabondK.Converters")]
+[assembly: XmlnsDefinition("http://schemas.vagabond-k.com/winfx/2016/xaml", "VagabondK.Windows")]
+[assembly: XmlnsDefinition("http://schemas.vagabond-k.com/winfx/2016/xaml", "VagabondK.Windows.Converters")]
