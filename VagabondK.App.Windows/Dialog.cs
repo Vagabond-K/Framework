@@ -192,8 +192,15 @@ namespace VagabondK.App.Windows
         }
 
         /// <summary>
-        /// 대화상자 뷰의 ResizeMode 속성 정의
+        /// 대화상자 뷰의 ResizeMode 확장 속성
         /// </summary>
+        ///
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// 대화상자의 ResizeMode를 설정하거나 가져옵니다.
+        /// </summary>
+        /// <value>기본값은 CanResize입니다.</value>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ResizeModeProperty =
             DependencyProperty.RegisterAttached("ResizeMode", typeof(ResizeMode), typeof(Dialog), new PropertyMetadata(ResizeMode.CanResize));
 
@@ -220,8 +227,15 @@ namespace VagabondK.App.Windows
         }
 
         /// <summary>
-        /// 대화상자의 작업표시줄 표시 여부 속성 정의
+        /// 대화상자의 작업표시줄 표시 여부 확장 속성
         /// </summary>
+        ///
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// 대화상자의 작업표시줄 표시 여부를 설정하거나 가져옵니다.
+        /// </summary>
+        /// <value>기본값은 true입니다.</value>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ShowInTaskbarProperty =
             DependencyProperty.RegisterAttached("ShowInTaskbar", typeof(bool), typeof(Dialog), new PropertyMetadata(true));
 
@@ -241,8 +255,15 @@ namespace VagabondK.App.Windows
         public static void SetIsOk(Button obj, bool value) => obj.SetValue(IsOkProperty, value);
 
         /// <summary>
-        /// 대화상자에 표시된 버튼의 OK 버튼 여부 속성 정의
+        /// 대화상자에 표시된 버튼의 OK 버튼 여부 확장 속성
         /// </summary>
+        ///
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// 대화상자에 표시된 버튼의 OK 버튼 여부를 설정하거나 가져옵니다.
+        /// </summary>
+        /// <value>기본값은 false입니다.</value>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsOkProperty =
             DependencyProperty.RegisterAttached("IsOk", typeof(bool), typeof(Dialog), new PropertyMetadata(false, OnIsOkChanged));
 

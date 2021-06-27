@@ -8,12 +8,12 @@ using System.Windows;
 namespace VagabondK.Windows
 {
     /// <summary>
-    /// 기본 포커스를 위한 확장 속성
+    /// 화면을 로드할 때 기본으로 포커스를 설정하기 위한 확장 속성
     /// </summary>
     public static class Focus
     {
         /// <summary>
-        /// 기본 포커스인지 여부를 가져옵니다.
+        /// 화면을 로드할 때 기본으로 포커스를 설정할지 여부를 가져옵니다.
         /// </summary>
         /// <param name="obj">대상 개체</param>
         /// <returns>기본 포커스 여부</returns>
@@ -23,7 +23,7 @@ namespace VagabondK.Windows
         }
 
         /// <summary>
-        /// 기본 포커스인지 여부를 설정합니다.
+        /// 화면을 로드할 때 기본으로 포커스를 설정할지 여부를 지정합니다.
         /// </summary>
         /// <param name="obj">대상 개체</param>
         /// <param name="value">기본 포커스 여부</param>
@@ -33,8 +33,15 @@ namespace VagabondK.Windows
         }
 
         /// <summary>
-        /// 기본 포커스를 위한 확장 속성
+        /// 화면을 로드할 때 기본으로 포커스를 설정하기 위한 확장 속성
         /// </summary>
+        ///
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// 화면을 로드할 때 기본으로 포커스를 설정할지 여부를 지정하거나 가져옵니다.
+        /// </summary>
+        /// <value>기본값은 false입니다.</value>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsDefaultProperty =
             DependencyProperty.RegisterAttached("IsDefault", typeof(bool), typeof(Focus), new PropertyMetadata(false,
                 (sender, e) =>
