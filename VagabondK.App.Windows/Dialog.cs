@@ -42,7 +42,7 @@ namespace VagabondK.App.Windows
         {
             using (var pageScope = serviceProvider.CreatePageScope(viewModelType, viewType, title))
             {
-                var pageContext = pageScope.ServiceProvider.GetService<PageContext>();
+                var pageContext = pageScope.ServiceProvider.GetRequiredService<PageContext>();
                 initializer?.Invoke(pageContext.ViewModel, pageContext.View);
 
                 var owner = pageContext.Owner?.View is DependencyObject dependencyObject ? Window.GetWindow(dependencyObject) : Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive) ?? Application.Current.MainWindow;
@@ -83,11 +83,18 @@ namespace VagabondK.App.Windows
                 dialogWindow.WindowStartupLocation = owner == null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner;
                 pageContext.Result = null;
 
-                void OnViewScopePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+                void OnPageContextPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
                 {
-                    if (e.PropertyName == nameof(PageContext.Result) && pageContext.Result != null)
+                    switch (e.PropertyName)
                     {
-                        dialogWindow.DialogResult = pageContext.Result;
+                        case nameof(PageContext.Result):
+                            if (pageContext.Result != null)
+                                dialogWindow.DialogResult = pageContext.Result;
+                            break;
+                        case nameof(PageContext.View):
+                            (pageContext.View as FrameworkElement)?.SetBinding(FrameworkElement.DataContextProperty, nameof(pageContext.ViewModel));
+                            (pageContext.View as FrameworkContentElement)?.SetBinding(FrameworkContentElement.DataContextProperty, nameof(pageContext.ViewModel));
+                            break;
                     }
                 }
 
@@ -146,7 +153,7 @@ namespace VagabondK.App.Windows
 
                 void OnClosed(object sender, EventArgs e)
                 {
-                    pageContext.PropertyChanged -= OnViewScopePropertyChanged;
+                    pageContext.PropertyChanged -= OnPageContextPropertyChanged;
                     dialogWindow.Loaded -= OnLoaded;
                     dialogWindow.SourceInitialized -= OnSourceInitialized;
                     dialogWindow.Closed -= OnClosed;
@@ -156,7 +163,7 @@ namespace VagabondK.App.Windows
                         pageContext.Result = dialogWindow.DialogResult;
                 }
 
-                pageContext.PropertyChanged += OnViewScopePropertyChanged;
+                pageContext.PropertyChanged += OnPageContextPropertyChanged;
                 dialogWindow.Loaded += OnLoaded;
                 dialogWindow.SourceInitialized += OnSourceInitialized;
                 dialogWindow.Closing += Closing;

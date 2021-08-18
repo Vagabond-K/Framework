@@ -21,7 +21,9 @@ namespace VagabondK.App
         /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <param name="title">페이지 제목</param>
         /// <returns>응용프로그램 페이지 Scope</returns>
-        public static IServiceScope CreatePageScope(this IServiceProvider serviceProvider, string viewModelTypeName, string viewTypeName, string title) => CreatePageScope(serviceProvider, Type.GetType(viewModelTypeName), Type.GetType(viewTypeName), title);
+        public static IServiceScope CreatePageScope(this IServiceProvider serviceProvider, string viewModelTypeName, string viewTypeName, string title) => CreatePageScope(serviceProvider, 
+            string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName),
+            string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 응용프로그램 페이지 Scope 생성
@@ -31,7 +33,8 @@ namespace VagabondK.App
         /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <param name="title">페이지 제목</param>
         /// <returns>응용프로그램 페이지 Scope</returns>
-        public static IServiceScope CreatePageScope<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title) => CreatePageScope(serviceProvider, typeof(TViewModel), Type.GetType(viewTypeName), title);
+        public static IServiceScope CreatePageScope<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title) => CreatePageScope(serviceProvider, typeof(TViewModel), 
+            string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 응용프로그램 페이지 Scope 생성
@@ -54,17 +57,14 @@ namespace VagabondK.App
         public static IServiceScope CreatePageScope(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, string title)
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (viewModelType == null) throw new ArgumentNullException(nameof(viewModelType));
-            if (viewType == null) throw new ArgumentNullException(nameof(viewType));
+            if (viewModelType == null && viewType == null) throw new ArgumentNullException(nameof(viewModelType));
 
-            var owner = serviceProvider.GetService<PageContext>();
+            var owner = serviceProvider.GetRequiredService<PageContext>();
 
             var serviceScope = serviceProvider.CreateScope();
-            var pageContext = serviceScope.ServiceProvider.GetService<PageContext>();
+            var pageContext = serviceScope.ServiceProvider.GetRequiredService<PageContext>();
 
-            pageContext.serviceScope = serviceScope;
-            pageContext.ViewModel = serviceScope.ServiceProvider.GetService(viewModelType);
-            pageContext.View = serviceScope.ServiceProvider.GetService(viewType);
+            pageContext.InitPageContext(serviceScope, viewModelType, viewType);
             pageContext.Title = title;
 
             pageContext.Owner = owner;
@@ -83,17 +83,17 @@ namespace VagabondK.App
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
             if (pageData == null) throw new ArgumentNullException(nameof(pageData));
-            var viewModelType = Type.GetType(pageData.ViewModelTypeName) ?? throw new TypeLoadException(pageData.ViewModelTypeName);
-            var viewType = Type.GetType(pageData.ViewTypeName) ?? throw new TypeLoadException(nameof(pageData.ViewTypeName));
+            var viewModelType = string.IsNullOrWhiteSpace(pageData.ViewModelTypeName) ? null : Type.GetType(pageData.ViewModelTypeName);
+            var viewType = string.IsNullOrWhiteSpace(pageData.ViewTypeName) ? null : Type.GetType(pageData.ViewTypeName);
 
-            var owner = serviceProvider.GetService<PageContext>();
+            if (viewModelType == null && viewType == null) throw new TypeLoadException(pageData.ViewModelTypeName);
+
+            var owner = serviceProvider.GetRequiredService<PageContext>();
 
             var serviceScope = serviceProvider.CreateScope();
-            var pageContext = serviceScope.ServiceProvider.GetService<PageContext<TPageData>>();
+            var pageContext = serviceScope.ServiceProvider.GetRequiredService<PageContext<TPageData>>();
 
-            pageContext.serviceScope = serviceScope;
-            pageContext.ViewModel = serviceScope.ServiceProvider.GetService(viewModelType);
-            pageContext.View = serviceScope.ServiceProvider.GetService(viewType);
+            pageContext.InitPageContext(serviceScope, viewModelType, viewType);
             pageContext.PageData = pageData;
 
             pageContext.Owner = owner;

@@ -151,6 +151,6 @@ namespace VagabondK.App
         /// <param name="icon">아이콘</param>
         /// <param name="defaultResult">기본 선택 메시지 상자 결과</param>
         /// <returns>메시지 상자 결과 반환 태스크</returns>
-        public static Task<MessageBoxResult> ShowMessageBox(this IServiceProvider serviceProvider, string messageBoxText, string caption, MessageBoxButton button, MessageImage icon, MessageBoxResult defaultResult) => serviceProvider.GetService<IMessageBox>().Show(messageBoxText, caption, button, icon, defaultResult);
+        public static Task<MessageBoxResult> ShowMessageBox(this IServiceProvider serviceProvider, string messageBoxText, string caption, MessageBoxButton button, MessageImage icon, MessageBoxResult defaultResult) => serviceProvider.GetRequiredService<IMessageBox>().Show(messageBoxText, caption, button, icon, defaultResult);
     }
 }

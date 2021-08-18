@@ -34,10 +34,9 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName));
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog)
+            => dialog.ShowDialog(typeof(TViewModel), null as Type);
 
         /// <summary>
         /// 대화상자 표시
@@ -64,6 +63,15 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType)
+            => dialog.ShowDialog(viewModelType, null as Type, null as Action<object, object>);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Type viewType)
@@ -74,22 +82,42 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, Action<TViewModel> initializer)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, Action<TViewModel> initializer)
+            => dialog.ShowDialog(typeof(TViewModel), null as Type, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
 
         /// <summary>
         /// 대화상자 표시
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
+        /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, Action<TViewModel, object> initializer)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title, Action<TViewModel> initializer)
+            => dialog.ShowDialog(typeof(TViewModel), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, Action<TViewModel, object> initializer)
+            => dialog.ShowDialog(typeof(TViewModel), null as Type, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title, Action<TViewModel, object> initializer)
+            => dialog.ShowDialog(typeof(TViewModel), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -129,6 +157,16 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Action<object, object> initializer)
+            => dialog.ShowDialog(viewModelType, null as Type, null, (viewModel, view) => initializer?.Invoke(viewModel, view));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
@@ -140,11 +178,21 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="title">제목</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title)
+            => dialog.ShowDialog(typeof(TViewModel), null as Type, title);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="title">제목</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title);
+            => dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 대화상자 표시
@@ -173,6 +221,16 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, string title)
+            => dialog.ShowDialog(viewModelType, null as Type, title, out _);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <returns>대화상자 결과</returns>
@@ -189,7 +247,7 @@ namespace VagabondK.App
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title, Action<TViewModel> initializer)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+            => dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
 
         /// <summary>
         /// 대화상자 표시
@@ -201,7 +259,7 @@ namespace VagabondK.App
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title, Action<TViewModel, object> initializer)
-            => dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+            => dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -256,6 +314,17 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, string title, Action<object, object> initializer)
+            => dialog.ShowDialog(viewModelType, null as Type, title, (viewModel, view) => initializer?.Invoke(viewModel, view), out var viewModelResult);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
@@ -268,12 +337,26 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), null as Type, out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="title">제목</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title, out TViewModel viewModel)
+        {
+            var task = dialog.ShowDialog(typeof(TViewModel), title, out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -313,6 +396,20 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, out object viewModel)
+        {
+            var task = dialog.ShowDialog(viewModelType, null as Type, null as string, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
@@ -328,13 +425,12 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, Action<TViewModel> initializer, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), null as Type, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -344,13 +440,44 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="dialog">대화상자 서비스</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
+        /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        {
+            var task = dialog.ShowDialog(typeof(TViewModel), null as Type, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string title, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        {
+            var task = dialog.ShowDialog(typeof(TViewModel), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -408,6 +535,21 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, Action<object, object> initializer, out object viewModel)
+        {
+            var task = dialog.ShowDialog(viewModelType, null as Type, null, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
@@ -430,7 +572,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -472,6 +614,21 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="dialog">대화상자 서비스</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, string title, out object viewModel)
+        {
+            var task = dialog.ShowDialog(viewModelType, null as Type, title, null, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
@@ -495,7 +652,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -512,7 +669,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IDialog dialog, string viewTypeName, string title, Action<TViewModel, object> initializer, out TViewModel viewModel)
         {
-            var task = dialog.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            var task = dialog.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -585,17 +742,30 @@ namespace VagabondK.App
             return task;
         }
 
-
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="dialog">대화상자 서비스</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IDialog dialog, Type viewModelType, string title, Action<object, object> initializer, out object viewModel)
+        {
+            var task = dialog.ShowDialog(viewModelType, null, title, initializer, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
 
         /// <summary>
         /// 대화상자 표시
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName));
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider)
+            => serviceProvider.ShowDialog(typeof(TViewModel), null as Type);
 
         /// <summary>
         /// 대화상자 표시
@@ -622,6 +792,15 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType)
+            => serviceProvider.ShowDialog(viewModelType, null as Type, null as Action<object, object>);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Type viewType)
@@ -632,22 +811,42 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, Action<TViewModel> initializer)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, Action<TViewModel> initializer)
+            => serviceProvider.ShowDialog(typeof(TViewModel), null as Type, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
 
         /// <summary>
         /// 대화상자 표시
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
+        /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, Action<TViewModel, object> initializer)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title, Action<TViewModel> initializer)
+            => serviceProvider.ShowDialog(typeof(TViewModel), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, Action<TViewModel, object> initializer)
+            => serviceProvider.ShowDialog(typeof(TViewModel), null as Type, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title, Action<TViewModel, object> initializer)
+            => serviceProvider.ShowDialog(typeof(TViewModel), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -687,6 +886,16 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Action<object, object> initializer)
+            => serviceProvider.ShowDialog(viewModelType, null as Type, null, (viewModel, view) => initializer?.Invoke(viewModel, view));
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
@@ -698,11 +907,21 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="title">제목</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title)
+            => serviceProvider.ShowDialog(typeof(TViewModel), null as Type, title);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="title">제목</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title);
+            => serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 대화상자 표시
@@ -731,6 +950,16 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, string title)
+            => serviceProvider.ShowDialog(viewModelType, null as Type, title, out _);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <returns>대화상자 결과</returns>
@@ -747,7 +976,7 @@ namespace VagabondK.App
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title, Action<TViewModel> initializer)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
+            => serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel));
 
         /// <summary>
         /// 대화상자 표시
@@ -759,7 +988,7 @@ namespace VagabondK.App
         /// <param name="initializer">초기화 대리자</param>
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title, Action<TViewModel, object> initializer)
-            => serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
+            => serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (viewModel, view) => initializer?.Invoke((TViewModel)viewModel, view));
 
         /// <summary>
         /// 대화상자 표시
@@ -814,6 +1043,17 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, string title, Action<object, object> initializer)
+            => serviceProvider.ShowDialog(viewModelType, null as Type, title, (viewModel, view) => initializer?.Invoke(viewModel, view), out var viewModelResult);
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
@@ -826,12 +1066,26 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), null as Type, out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="title">제목</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title, out TViewModel viewModel)
+        {
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), title, out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -871,6 +1125,20 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, out object viewModel)
+        {
+            var task = serviceProvider.ShowDialog(viewModelType, null as Type, null as string, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
@@ -886,13 +1154,12 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, Action<TViewModel> initializer, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), null as Type, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -902,13 +1169,44 @@ namespace VagabondK.App
         /// </summary>
         /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
         /// <param name="serviceProvider">서비스 공급자</param>
-        /// <param name="viewTypeName">대화상자 뷰 형식 이름</param>
+        /// <param name="title">제목</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
         /// <returns>대화상자 결과</returns>
-        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        {
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), null as Type, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            viewModel = (TViewModel)viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <typeparam name="TViewModel">대화상자 뷰 모델 형식</typeparam>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string title, Action<TViewModel, object> initializer, out TViewModel viewModel)
+        {
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -966,6 +1264,21 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Action<object, object> initializer, out object viewModel)
+        {
+            var task = serviceProvider.ShowDialog(viewModelType, null as Type, null, (vm, view) => initializer?.Invoke(vm, view), out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="initializer">초기화 대리자</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
@@ -988,7 +1301,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -1030,6 +1343,21 @@ namespace VagabondK.App
         /// </summary>
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, string title, out object viewModel)
+        {
+            var task = serviceProvider.ShowDialog(viewModelType, null as Type, title, null, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
         /// <param name="viewType">대화상자 뷰 형식</param>
         /// <param name="title">제목</param>
         /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
@@ -1053,7 +1381,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title, Action<TViewModel> initializer, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -1070,7 +1398,7 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog<TViewModel>(this IServiceProvider serviceProvider, string viewTypeName, string title, Action<TViewModel, object> initializer, out TViewModel viewModel)
         {
-            var task = serviceProvider.ShowDialog(typeof(TViewModel), Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
+            var task = serviceProvider.ShowDialog(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title, (vm, view) => initializer?.Invoke((TViewModel)vm, view), out var viewModelResult);
             viewModel = (TViewModel)viewModelResult;
             return task;
         }
@@ -1155,7 +1483,23 @@ namespace VagabondK.App
         /// <returns>대화상자 결과</returns>
         public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, Type viewType, string title, Action<object, object> initializer, out object viewModel)
         {
-            var task = serviceProvider.GetService<IDialog>().ShowDialog(viewModelType, viewType, title, initializer, out var viewModelResult);
+            var task = serviceProvider.GetRequiredService<IDialog>().ShowDialog(viewModelType, viewType, title, initializer, out var viewModelResult);
+            viewModel = viewModelResult;
+            return task;
+        }
+
+        /// <summary>
+        /// 대화상자 표시
+        /// </summary>
+        /// <param name="serviceProvider">서비스 공급자</param>
+        /// <param name="viewModelType">대화상자 뷰 모델 형식</param>
+        /// <param name="title">제목</param>
+        /// <param name="initializer">초기화 대리자</param>
+        /// <param name="viewModel">대화상자 표시 후 뷰 모델 결과</param>
+        /// <returns>대화상자 결과</returns>
+        public static Task<bool?> ShowDialog(this IServiceProvider serviceProvider, Type viewModelType, string title, Action<object, object> initializer, out object viewModel)
+        {
+            var task = serviceProvider.GetRequiredService<IDialog>().ShowDialog(viewModelType, null, title, initializer, out var viewModelResult);
             viewModel = viewModelResult;
             return task;
         }

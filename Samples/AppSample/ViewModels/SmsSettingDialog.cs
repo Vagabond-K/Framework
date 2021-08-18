@@ -10,7 +10,7 @@ using VagabondK.App;
 
 namespace AppSample.ViewModels
 {
-    [ServiceDescription]
+    [ViewModel(DefaultViewType = typeof(Views.SmsSettingDialogView))]
     public class SmsSettingDialog : NotifyPropertyChangeObject, INotifyLoaded, IQueryClosing
     {
         public SmsSettingDialog(IServiceProvider serviceProvider)

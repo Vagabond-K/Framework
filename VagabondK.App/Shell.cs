@@ -59,7 +59,7 @@ namespace VagabondK.App
         /// <summary>
         /// 속성 값이 변경될 때 발생합니다.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// 쉘 서비스 공급자
@@ -85,19 +85,44 @@ namespace VagabondK.App
         /// 페이지 열기
         /// </summary>
         /// <param name="viewModelTypeName">페이지 뷰 모델 형식 이름</param>
-        /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <returns>페이지 컨텍스트</returns>
-        public Task<PageContext> OpenPage(string viewModelTypeName, string viewTypeName)
-            => OpenPage(Type.GetType(viewModelTypeName), Type.GetType(viewTypeName));
+        public Task<PageContext> OpenPage(string viewModelTypeName)
+            => OpenPage(string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), null);
 
         /// <summary>
         /// 페이지 열기
         /// </summary>
         /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
-        /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <returns>페이지 컨텍스트</returns>
-        public Task<PageContext> OpenPage<TViewModel>(string viewTypeName)
-            => OpenPage(typeof(TViewModel), Type.GetType(viewTypeName));
+        public Task<PageContext> OpenPage<TViewModel>()
+            => OpenPage(typeof(TViewModel), null, null);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <param name="viewModelType">페이지 뷰 모델 형식</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage(Type viewModelType)
+            => OpenPage(viewModelType, null, null);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <param name="viewModelTypeName">페이지 뷰 모델 형식 이름</param>
+        /// <param name="title">페이지 제목</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage(string viewModelTypeName, string title)
+            => OpenPage(string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), null, title);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
+        /// <param name="title">페이지 제목</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage<TViewModel>(string title)
+            => OpenPage(typeof(TViewModel), null, title);
+
 
         /// <summary>
         /// 페이지 열기
@@ -106,7 +131,7 @@ namespace VagabondK.App
         /// <typeparam name="TView">페이지 뷰 형식</typeparam>
         /// <returns>페이지 컨텍스트</returns>
         public Task<PageContext> OpenPage<TViewModel, TView>()
-            => OpenPage(typeof(TViewModel), typeof(TView));
+            => OpenPage(typeof(TViewModel), typeof(TView), null);
 
         /// <summary>
         /// 페이지 열기
@@ -125,7 +150,7 @@ namespace VagabondK.App
         /// <param name="title">페이지 제목</param>
         /// <returns>페이지 컨텍스트</returns>
         public Task<PageContext> OpenPage(string viewModelTypeName, string viewTypeName, string title)
-            => OpenPage(Type.GetType(viewModelTypeName), Type.GetType(viewTypeName), title);
+            => OpenPage(string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 페이지 열기
@@ -135,7 +160,7 @@ namespace VagabondK.App
         /// <param name="title">페이지 제목</param>
         /// <returns>페이지 컨텍스트</returns>
         public Task<PageContext> OpenPage<TViewModel>(string viewTypeName, string title)
-            => OpenPage(typeof(TViewModel), Type.GetType(viewTypeName), title);
+            => OpenPage(typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 페이지 열기
@@ -171,7 +196,7 @@ namespace VagabondK.App
         {
             defaultServices.AddSingleton(this);
             defaultServices.AddScoped<PageContext<TPageData>>();
-            defaultServices.AddScoped<PageContext>(serviceProvider => serviceProvider.GetService<PageContext<TPageData>>());
+            defaultServices.AddScoped<PageContext>(serviceProvider => serviceProvider.GetRequiredService<PageContext<TPageData>>());
         }
 
         /// <summary>

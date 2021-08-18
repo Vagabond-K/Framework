@@ -31,29 +31,31 @@
             <Setter Property="Padding" Value="15, 3"/>
         </Style>
     </FrameworkElement.Resources>
-    <Grid x:Name="Root" Margin="5" DataContext="{Binding SmsSetting}">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Text="서비스 ID:"/>
-        <TextBox Grid.Row="0" Text="{Binding ServiceID, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Grid.Row="1" Text="Access Key ID:"/>
-        <TextBox Grid.Row="1" Text="{Binding AccessKeyID, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Grid.Row="2" Text="Secret Key:"/>
-        <TextBox Grid.Row="2" Text="{Binding SecretKey, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Grid.Row="3" Text="발신자 휴대폰:"/>
-        <TextBox Grid.Row="3" Text="{Binding SenderPhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel x:Name="Root" Margin="5">
+        <Grid DataContext="{Binding SmsSetting}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Text="서비스 ID:"/>
+            <TextBox Grid.Row="0" Text="{Binding ServiceID, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="1" Text="Access Key ID:"/>
+            <TextBox Grid.Row="1" Text="{Binding AccessKeyID, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="2" Text="Secret Key:"/>
+            <TextBox Grid.Row="2" Text="{Binding SecretKey, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="3" Text="발신자 휴대폰:"/>
+            <TextBox Grid.Row="3" Text="{Binding SenderPhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="2">
             <Button Content="확인" IsDefault="True" vk:Dialog.IsOk="True"/>
             <Button Content="취소" IsCancel="True"/>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

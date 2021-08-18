@@ -31,6 +31,6 @@ namespace VagabondK.App
         /// <param name="serviceProvider">서비스 공급자</param>
         /// <param name="name">포커스를 설정할 컨트롤 또는 속성 이름</param>
         /// <returns>포커스 설정 결과</returns>
-        public static bool Focus(this IServiceProvider serviceProvider, string name) => serviceProvider.GetService<IFocusHandler>().Focus(name);
+        public static bool Focus(this IServiceProvider serviceProvider, string name) => serviceProvider.GetRequiredService<IFocusHandler>().Focus(name);
     }
 }

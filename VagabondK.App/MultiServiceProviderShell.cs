@@ -109,25 +109,65 @@ namespace VagabondK.App
         IEnumerable<TServiceProviderKey> IReadOnlyDictionary<TServiceProviderKey, IServiceProvider>.Keys => Keys;
         IEnumerable<IServiceProvider> IReadOnlyDictionary<TServiceProviderKey, IServiceProvider>.Values => Values;
 
+
         /// <summary>
         /// 페이지 열기
         /// </summary>
         /// <param name="key">서비스 공급자 키</param>
         /// <param name="viewModelTypeName">페이지 뷰 모델 형식 이름</param>
-        /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <returns>페이지 컨텍스트</returns>
-        public Task<PageContext> OpenPage(TServiceProviderKey key, string viewModelTypeName, string viewTypeName)
-            => OpenPage(key, Type.GetType(viewModelTypeName), Type.GetType(viewTypeName));
+        public Task<PageContext> OpenPage(TServiceProviderKey key, string viewModelTypeName)
+            => OpenPage(key, string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), null as Type);
 
         /// <summary>
         /// 페이지 열기
         /// </summary>
         /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
         /// <param name="key">서비스 공급자 키</param>
-        /// <param name="viewTypeName">페이지 뷰 형식 이름</param>
         /// <returns>페이지 컨텍스트</returns>
-        public Task<PageContext> OpenPage<TViewModel>(TServiceProviderKey key, string viewTypeName)
-            => OpenPage(key, typeof(TViewModel), Type.GetType(viewTypeName));
+        public Task<PageContext> OpenPage<TViewModel>(TServiceProviderKey key)
+            => OpenPage(key, typeof(TViewModel), null as Type);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <param name="key">서비스 공급자 키</param>
+        /// <param name="viewModelType">페이지 뷰 모델 형식</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage(TServiceProviderKey key, Type viewModelType)
+            => OpenPage(key, viewModelType, null, null);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <param name="key">서비스 공급자 키</param>
+        /// <param name="viewModelTypeName">페이지 뷰 모델 형식 이름</param>
+        /// <param name="title">페이지 제목</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage(TServiceProviderKey key, string viewModelTypeName, string title)
+            => OpenPage(key, string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), null, title);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <typeparam name="TViewModel">페이지 뷰 모델 형식</typeparam>
+        /// <param name="key">서비스 공급자 키</param>
+        /// <param name="title">페이지 제목</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage<TViewModel>(TServiceProviderKey key, string title)
+            => OpenPage(key, typeof(TViewModel), null, title);
+
+        /// <summary>
+        /// 페이지 열기
+        /// </summary>
+        /// <param name="key">서비스 공급자 키</param>
+        /// <param name="viewModelType">페이지 뷰 모델 형식</param>
+        /// <param name="title">페이지 제목</param>
+        /// <returns>페이지 컨텍스트</returns>
+        public Task<PageContext> OpenPage(TServiceProviderKey key, Type viewModelType, string title)
+            => OpenPage(serviceProviders[key], viewModelType, null, title);
+
+
 
         /// <summary>
         /// 페이지 열기
@@ -158,7 +198,7 @@ namespace VagabondK.App
         /// <param name="title">페이지 제목</param>
         /// <returns>페이지 컨텍스트</returns>
         public Task<PageContext> OpenPage(TServiceProviderKey key, string viewModelTypeName, string viewTypeName, string title)
-            => OpenPage(key, Type.GetType(viewModelTypeName), Type.GetType(viewTypeName), title);
+            => OpenPage(key, string.IsNullOrWhiteSpace(viewModelTypeName) ? null : Type.GetType(viewModelTypeName), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 페이지 열기
@@ -169,7 +209,7 @@ namespace VagabondK.App
         /// <param name="title">페이지 제목</param>
         /// <returns>페이지 컨텍스트</returns>
         public Task<PageContext> OpenPage<TViewModel>(TServiceProviderKey key, string viewTypeName, string title)
-            => OpenPage(key, typeof(TViewModel), Type.GetType(viewTypeName), title);
+            => OpenPage(key, typeof(TViewModel), string.IsNullOrWhiteSpace(viewTypeName) ? null : Type.GetType(viewTypeName), title);
 
         /// <summary>
         /// 페이지 열기

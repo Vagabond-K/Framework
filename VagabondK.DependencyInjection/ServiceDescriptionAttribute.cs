@@ -28,6 +28,12 @@ namespace System
         /// <summary>
         /// 생성자
         /// </summary>
+        /// <param name="priority">우선권(값이 클수록 우선권을 가짐)</param>
+        public ServiceDescriptionAttribute(double priority) : this(null, ServiceLifetime.Scoped, priority) { }
+
+        /// <summary>
+        /// 생성자
+        /// </summary>
         /// <param name="serviceType">서비스 형식</param>
         /// <param name="lifetime">서비스 수명</param>
         public ServiceDescriptionAttribute(Type serviceType, ServiceLifetime lifetime) : this(serviceType, lifetime, 0) { }
@@ -38,6 +44,13 @@ namespace System
         /// <param name="serviceType">서비스 형식</param>
         /// <param name="priority">우선권(값이 클수록 우선권을 가짐)</param>
         public ServiceDescriptionAttribute(Type serviceType, double priority) : this(serviceType, ServiceLifetime.Scoped, priority) { }
+
+        /// <summary>
+        /// 생성자
+        /// </summary>
+        /// <param name="lifetime">서비스 수명</param>
+        /// <param name="priority">우선권(값이 클수록 우선권을 가짐)</param>
+        public ServiceDescriptionAttribute(ServiceLifetime lifetime, double priority) : this(null, lifetime, priority) { }
 
         /// <summary>
         /// 생성자

@@ -1,16 +1,11 @@
 ﻿using AppSample.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using VagabondK;
 using VagabondK.App;
 
 namespace AppSample.ViewModels
 {
-    [ServiceDescription]
+    [ViewModel(DefaultViewType = typeof(Views.MainPageView))]
     public class MainPage : NotifyPropertyChangeObject, INotifyLoaded
     {
         public MainPage(IServiceProvider serviceProvider)
@@ -22,7 +17,7 @@ namespace AppSample.ViewModels
 
         public async void OnLoaded()
         {
-            //await serviceProvider.ShowMessageBox("메인 페이지 로드 완료!", "알림", MessageBoxButton.OK, MessageImage.Information);
+            await serviceProvider.ShowMessageBox("메인 페이지 로드 완료!", "알림", MessageBoxButton.OK, MessageImage.Information);
         }
 
         public SmsSetting SmsSetting { get => Get(() => new SmsSetting()); }
@@ -31,7 +26,7 @@ namespace AppSample.ViewModels
         {
             get => GetCommand(async () =>
             {
-                if (await serviceProvider.ShowDialog<SmsSettingDialog, Views.SmsSettingDialogView>("SMS ettings", out var result) == true)
+                if (await serviceProvider.ShowDialog<SmsSettingDialog>("SMS ettings", out var result) == true)
                 {
                     SmsSetting.ServiceID = result.SmsSetting.ServiceID;
                     SmsSetting.AccessKeyID = result.SmsSetting.AccessKeyID;
