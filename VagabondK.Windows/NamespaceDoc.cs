@@ -20,6 +20,17 @@ namespace VagabondK.Windows
     }
 }
 
+namespace VagabondK.Windows.Commands
+{
+    /// <summary>
+    /// 자주 사용되는 커맨드들을 지원입니다.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    class NamespaceDoc
+    {
+    }
+}
+
 namespace VagabondK.Windows.Converters
 {
     /// <summary>

@@ -31,6 +31,17 @@ namespace System.ComponentModel
     }
 }
 
+namespace System.Threading
+{
+    /// <summary>
+    /// Vagabond K가 개인적으로 워낙 자주 써서 그냥 System.Threading 네임스페이스에 추가해버린 기능들입니다.
+    /// </summary>
+    [Runtime.CompilerServices.CompilerGenerated()]
+    class NamespaceDoc
+    {
+    }
+}
+
 namespace VagabondK
 {
     /// <summary>
