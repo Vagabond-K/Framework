@@ -28,7 +28,13 @@ namespace VagabondK.App
         /// <summary>
         /// 속성 값이 변경될 때 발생합니다.
         /// </summary>
-        public virtual event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// PropertyChanged 이벤트를 발생시킴.
+        /// </summary>
+        /// <param name="e">PropertyChanged 이벤트에 대한 데이터를 제공함.</param>
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
 
         /// <summary>
         /// 페이지 제목

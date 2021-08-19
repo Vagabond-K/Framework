@@ -47,7 +47,13 @@ namespace VagabondK.App
         /// <summary>
         /// 속성 값이 변경될 때 발생합니다.
         /// </summary>
-        public virtual event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// PropertyChanged 이벤트를 발생시킴.
+        /// </summary>
+        /// <param name="e">PropertyChanged 이벤트에 대한 데이터를 제공함.</param>
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
 
         /// <summary>
         /// 뷰 모댈
@@ -115,11 +121,6 @@ namespace VagabondK.App
     /// <typeparam name="TPageData">페이지 데이터 형식</typeparam>
     public class PageContext<TPageData> : PageContext where TPageData : IPageData
     {
-        /// <summary>
-        /// 속성 값이 변경될 때 발생합니다.
-        /// </summary>
-        public override event PropertyChangedEventHandler PropertyChanged;
-
         private TPageData pageData;
 
         /// <summary>
@@ -130,16 +131,20 @@ namespace VagabondK.App
             get => pageData;
             internal set
             {
-                if (pageData != null && !Equals(pageData, value))
-                    pageData.PropertyChanged -= OnPageDataPropertyChanged;
-
-                bool titleUpdated = pageData?.Title != value?.Title;
-                if (this.Set(ref pageData, value, PropertyChanged) && titleUpdated)
+                if (!Equals(pageData, value))
                 {
+                    if (pageData != null)
+                        pageData.PropertyChanged -= OnPageDataPropertyChanged;
+
+                    bool titleUpdated = pageData?.Title != value?.Title;
+
+                    pageData = value;
+
                     if (pageData != null)
                         pageData.PropertyChanged += OnPageDataPropertyChanged;
 
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
+                    if (titleUpdated)
+                        OnPropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
                 }
             }
         }
@@ -148,7 +153,7 @@ namespace VagabondK.App
         {
             if (e.PropertyName == nameof(IPageData.Title))
             {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
             }
         }
 
@@ -167,7 +172,7 @@ namespace VagabondK.App
                 else if (pageData.Title != value)
                 {
                     pageData.Title = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace System
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        public virtual event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
 
         private readonly SynchronizationContext synchronizationContext;
 

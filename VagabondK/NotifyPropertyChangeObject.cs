@@ -289,8 +289,11 @@ namespace System
             {
                 if (value == null)
                     return default;
-                
-                return (TValue)Convert.ChangeType(value, typeof(TValue));
+
+                if (value is IConvertible)
+                    return (TValue)Convert.ChangeType(value, typeof(TValue));
+                else
+                    return (TValue)(object)value;
             }
 
             public override void SetValue<TValue>(TValue value)
