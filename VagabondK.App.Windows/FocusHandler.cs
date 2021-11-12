@@ -39,7 +39,7 @@ namespace VagabondK.App.Windows
 
             if (pageContext.View is FrameworkElement frameworkElement)
             {
-                result = frameworkElement?.FindName(name) is UIElement target && (target.IsFocused || target.Focus());
+                result = frameworkElement?.FindName(name) is UIElement target && target.Focus();
                 if (!result)
                 {
                     foreach (var control in GetAllChilds(frameworkElement))
@@ -54,7 +54,9 @@ namespace VagabondK.App.Windows
                         else if (control is RangeBase range)
                             binding = range.GetBindingExpression(RangeBase.ValueProperty);
 
-                        result = binding?.ResolvedSourcePropertyName == name && (control.IsFocused || control.Focus());
+                        result = binding?.ResolvedSourcePropertyName == name && control.Focus();
+                        if (result)
+                            break;
                     }
                 }
             }

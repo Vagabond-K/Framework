@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace VagabondK.Windows
+namespace VagabondK.Windows.Commands
 {
     /// <summary>
     /// 윈도우 최소화 커맨드

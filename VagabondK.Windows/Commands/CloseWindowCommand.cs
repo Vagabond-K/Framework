@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace VagabondK.Windows
+namespace VagabondK.Windows.Commands
 {
     /// <summary>
-    /// 윈도우 최대화 커맨드
+    /// 윈도우 닫기 커맨드
     /// </summary>
-    public class ToggleMaximizeWindowCommand : ICommand
+    public class CloseWindowCommand : ICommand
     {
         /// <summary>
         /// 명령을 실행해야 하는지 여부에 영향을 주는 변경이 발생할 때 발생합니다.
@@ -35,18 +35,7 @@ namespace VagabondK.Windows
         /// <param name="parameter">명령에 사용된 데이터입니다. 명령에서 데이터를 전달할 필요가 없으면 이 개체를 null로 설정할 수 있습니다.</param>
         public void Execute(object parameter)
         {
-            if (parameter is Window window)
-            {
-                switch (window.WindowState)
-                {
-                    case WindowState.Maximized:
-                        window.WindowState = WindowState.Normal;
-                        break;
-                    case WindowState.Normal:
-                        window.WindowState = WindowState.Maximized;
-                        break;
-                }
-            }
+            (parameter as Window)?.Close();
         }
     }
 }
