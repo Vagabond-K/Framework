@@ -13,12 +13,20 @@ namespace VagabondK.App
     /// </summary>
     public class PageContext : IDisposable, INotifyPropertyChanged
     {
+        /// <summary>
+        /// 소멸자
+        /// </summary>
+        ~PageContext()
+        {
+            Dispose();
+        }
+
         private bool isDisposed;
 
         /// <summary>
         /// Dispose
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (!isDisposed)
             {
@@ -91,10 +99,10 @@ namespace VagabondK.App
             this.viewModelType = viewModelType;
             this.viewType = viewType;
 
-            viewProvider = ServiceProvider?.GetRequiredService<ViewProvider>();
+            viewProvider = serviceScope.ServiceProvider?.GetRequiredService<ViewProvider>();
 
             if (this.viewModelType != null)
-                ViewModel = ServiceProvider?.GetService(this.viewModelType);
+                ViewModel = serviceScope.ServiceProvider?.GetService(this.viewModelType);
             if (this.viewType != null) 
                 View = viewProvider?.GetView(this.viewType);
 
@@ -103,7 +111,7 @@ namespace VagabondK.App
                 this.viewModelType = view.GetType().GetTypeInfo().GetCustomAttribute<ViewAttribute>()?.DefaultViewModelType;
 
                 if (this.viewModelType != null)
-                    ViewModel = ServiceProvider?.GetService(this.viewModelType);
+                    ViewModel = serviceScope.ServiceProvider?.GetService(this.viewModelType);
             }
             else if (view == null)
             {
@@ -121,7 +129,32 @@ namespace VagabondK.App
     /// <typeparam name="TPageData">페이지 데이터 형식</typeparam>
     public class PageContext<TPageData> : PageContext where TPageData : IPageData
     {
+        /// <summary>
+        /// 소멸자
+        /// </summary>
+        ~PageContext()
+        {
+            Dispose();
+        }
+
+        private bool isDisposed;
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public override void Dispose()
+        {
+            if (!isDisposed)
+            {
+                isDisposed = true;
+                base.Dispose();
+                weakPropertyChangedEventListener?.Dispose();
+            }
+            GC.SuppressFinalize(this);
+        }
+
         private TPageData pageData;
+        private WeakPropertyChangedEventListener weakPropertyChangedEventListener;
 
         /// <summary>
         /// 페이지 데이터
@@ -134,14 +167,19 @@ namespace VagabondK.App
                 if (!Equals(pageData, value))
                 {
                     if (pageData != null)
-                        pageData.PropertyChanged -= OnPageDataPropertyChanged;
+                    {
+                        weakPropertyChangedEventListener?.Dispose();
+                        weakPropertyChangedEventListener = null;
+                    }
 
                     bool titleUpdated = pageData?.Title != value?.Title;
 
                     pageData = value;
-
+                    
                     if (pageData != null)
-                        pageData.PropertyChanged += OnPageDataPropertyChanged;
+                    {
+                        weakPropertyChangedEventListener = new WeakPropertyChangedEventListener(this, pageData);
+                    }
 
                     if (titleUpdated)
                         OnPropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
@@ -174,6 +212,42 @@ namespace VagabondK.App
                     pageData.Title = value;
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
                 }
+            }
+        }
+
+        class WeakPropertyChangedEventListener : IDisposable
+        {
+            ~WeakPropertyChangedEventListener()
+            {
+                Dispose();
+            }
+
+            private bool isDisposed;
+
+            public void Dispose()
+            {
+                if (!isDisposed)
+                {
+                    isDisposed = true;
+                    source.PropertyChanged -= OnEvent;
+                }
+                GC.SuppressFinalize(this);
+            }
+
+            public WeakPropertyChangedEventListener(PageContext<TPageData> pageContext, IPageData source)
+            {
+                this.source = source;
+                source.PropertyChanged += OnEvent;
+                pageContextReference = new WeakReference<PageContext<TPageData>>(pageContext);
+            }
+
+            private readonly IPageData source;
+            private readonly WeakReference<PageContext<TPageData>> pageContextReference;
+
+            private void OnEvent(object source, EventArgs args)
+            {
+                if (pageContextReference.TryGetTarget(out var pageContext))
+                    pageContext.OnPropertyChanged(new PropertyChangedEventArgs(nameof(pageContext.Title)));
             }
         }
     }
