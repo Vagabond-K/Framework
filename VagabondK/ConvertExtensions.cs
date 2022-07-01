@@ -19,7 +19,9 @@
             
             try
             {
-                return (T)Convert.ChangeType(value, typeof(T));
+                Type t = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+                
+                return (T)Convert.ChangeType(value, t);
             }
             catch
             {
