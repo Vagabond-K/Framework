@@ -7,42 +7,11 @@ namespace System.ComponentModel
     /// </summary>
     public sealed class PropertyValues : NotifyPropertyChangeObject
     {
-        private PropertyValues(object eventSource, PropertyChangingEventHandler propertyChangingEvent, PropertyChangedEventHandler propertyChangedEvent) : base(eventSource)
-        {
-            PropertyChanging += propertyChangingEvent;
-            PropertyChanged += propertyChangedEvent;
-        }
-
         /// <summary>
-        /// PropertyValues 객체 생성
+        /// 생성자
         /// </summary>
-        /// <typeparam name="TEventSource">PropertyChanged 이벤트를 포함하는 객체 형식</typeparam>
-        /// <param name="eventSource">PropertyChanged 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangedEvent">PropertyChanged 이벤트</param>
-        /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangedEventHandler propertyChangedEvent) where TEventSource : class, INotifyPropertyChanged
-            => new PropertyValues(eventSource, null, propertyChangedEvent);
-
-        /// <summary>
-        /// PropertyValues 객체 생성
-        /// </summary>
-        /// <typeparam name="TEventSource">PropertyChanging 이벤트를 포함하는 객체 형식</typeparam>
-        /// <param name="eventSource">PropertyChanging 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangingEvent">PropertyChanging 이벤트</param>
-        /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEvent) where TEventSource : class, INotifyPropertyChanging
-            => new PropertyValues(eventSource, propertyChangingEvent, null);
-
-        /// <summary>
-        /// PropertyValues 객체 생성
-        /// </summary>
-        /// <typeparam name="TEventSource">PropertyChanging, PropertyChanged 이벤트를 포함하는 객체 형식</typeparam>
-        /// <param name="eventSource">PropertyChanging, PropertyChanged 이벤트를 포함하는 객체</param>
-        /// <param name="propertyChangingEvent">PropertyChanging 이벤트</param>
-        /// <param name="propertyChangedEvent">PropertyChanged 이벤트</param>
-        /// <returns>PropertyValues 객체</returns>
-        public static PropertyValues Create<TEventSource>(TEventSource eventSource, PropertyChangingEventHandler propertyChangingEvent, PropertyChangedEventHandler propertyChangedEvent) where TEventSource : class, INotifyPropertyChanging, INotifyPropertyChanged
-            => new PropertyValues(eventSource, propertyChangingEvent, propertyChangedEvent);
+        /// <param name="eventSource">이벤트 발생 소스</param>
+        public PropertyValues(object eventSource) : base(eventSource) { }
 
         /// <summary>
         /// 속성 값 가져오기
@@ -65,6 +34,46 @@ namespace System.ComponentModel
             => base.Get(defaultValue, propertyName);
 
         /// <summary>
+        /// 즉석 커맨드 가져오기
+        /// </summary>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        public new InstantCommand GetCommand(Action executeAction, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand(executeAction), propertyName);
+
+        /// <summary>
+        /// 즉석 커맨드 가져오기
+        /// </summary>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        public new InstantCommand GetCommand(Action executeAction, Func<bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand(executeAction, canExecuteFunc), propertyName);
+
+        /// <summary>
+        /// 파라미터를 포함한 즉석 커맨드 가져오기
+        /// </summary>
+        /// <typeparam name="TParameter">파라미터 형식</typeparam>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        public new InstantCommand<TParameter> GetCommand<TParameter>(Action<TParameter> executeAction, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand<TParameter>(executeAction), propertyName);
+
+        /// <summary>
+        /// 파라미터를 포함한 즉석 커맨드 가져오기
+        /// </summary>
+        /// <typeparam name="TParameter">파라미터 형식</typeparam>
+        /// <param name="executeAction">커맨드 실행 Action</param>
+        /// <param name="canExecuteFunc">커맨드 실행 가능 여부 Func</param>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>커맨드</returns>
+        public new InstantCommand<TParameter> GetCommand<TParameter>(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc, [CallerMemberName] string propertyName = null)
+            => Get(() => new InstantCommand<TParameter>(executeAction, canExecuteFunc), propertyName);
+
+        /// <summary>
         /// 속성 값 설정하기
         /// </summary>
         /// <typeparam name="TProperty">속성 형식</typeparam>
@@ -72,6 +81,14 @@ namespace System.ComponentModel
         /// <param name="propertyName">속성 명</param>
         /// <returns>설정 여부</returns>
         public new bool Set<TProperty>(TProperty value, [CallerMemberName]string propertyName = null)
-            => Set(value, propertyName);
+            => base.Set(value, propertyName);
+
+        /// <summary>
+        /// 속성 값 제거, 제거되면 다시 Get으로 속성 값을 가져올 때 속성 초기화 동작 결과나 기본 값을 반환함.
+        /// </summary>
+        /// <param name="propertyName">속성 명</param>
+        /// <returns>제거 여부</returns>
+        public new bool ClearProperty(string propertyName)
+            => base.ClearProperty(propertyName);
     }
 }
