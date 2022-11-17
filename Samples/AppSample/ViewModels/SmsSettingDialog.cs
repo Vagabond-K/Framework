@@ -28,13 +28,11 @@ namespace AppSample.ViewModels
         }
 
         public async Task<bool> QueryClosing(bool result)
-        {
-            return !(result && await IsNullOrWhiteSpace(SmsSetting,
+            => !(result && await IsNullOrWhiteSpace(SmsSetting,
                 nameof(SmsSetting.ServiceID),
                 nameof(SmsSetting.AccessKeyID),
                 nameof(SmsSetting.SecretKey),
                 nameof(SmsSetting.SenderPhoneNumber)));
-        }
 
         private async Task<bool> IsNullOrWhiteSpace(object source, params string[] propertyNames)
         {

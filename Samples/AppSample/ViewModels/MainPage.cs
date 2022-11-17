@@ -22,18 +22,15 @@ namespace AppSample.ViewModels
 
         public SmsSetting SmsSetting { get => Get(() => new SmsSetting()); }
 
-        public ICommand ShowDialogCommand
+        public ICommand ShowDialogCommand => GetCommand(async () =>
         {
-            get => GetCommand(async () =>
+            if (await serviceProvider.ShowDialog<SmsSettingDialog>("SMS ettings", out var result) == true)
             {
-                if (await serviceProvider.ShowDialog<SmsSettingDialog>("SMS ettings", out var result) == true)
-                {
-                    SmsSetting.ServiceID = result.SmsSetting.ServiceID;
-                    SmsSetting.AccessKeyID = result.SmsSetting.AccessKeyID;
-                    SmsSetting.SecretKey = result.SmsSetting.SecretKey;
-                    SmsSetting.SenderPhoneNumber = result.SmsSetting.SenderPhoneNumber;
-                }
-            });
-        }
+                SmsSetting.ServiceID = result.SmsSetting.ServiceID;
+                SmsSetting.AccessKeyID = result.SmsSetting.AccessKeyID;
+                SmsSetting.SecretKey = result.SmsSetting.SecretKey;
+                SmsSetting.SenderPhoneNumber = result.SmsSetting.SenderPhoneNumber;
+            }
+        });
     }
 }

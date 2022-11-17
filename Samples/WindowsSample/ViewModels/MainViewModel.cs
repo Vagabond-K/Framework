@@ -25,24 +25,18 @@ namespace WindowsSample.ViewModels
             }
         }
 
-        public IInstantCommand IncreaseCommand
+        public IInstantCommand IncreaseCommand => GetCommand(() =>
         {
-            get => GetCommand(() =>
-            {
-                Int32Value += 1;
-                FloatValue += 0.1;
-                DoubleValue += 0.01;
-            }, () => IsEnabledCommands);
-        }
+            Int32Value += 1;
+            FloatValue += 0.1;
+            DoubleValue += 0.01;
+        }, () => IsEnabledCommands);
 
-        public IInstantCommand DecreaseCommand
+        public IInstantCommand DecreaseCommand => GetCommand(() =>
         {
-            get => GetCommand(() =>
-            {
-                Int32Value -= 1;
-                FloatValue -= 0.1;
-                DoubleValue -= 0.01;
-            }, () => IsEnabledCommands);
-        }
+            Int32Value -= 1;
+            FloatValue -= 0.1;
+            DoubleValue -= 0.01;
+        }, () => IsEnabledCommands);
     }
 }
