@@ -49,6 +49,7 @@ namespace VagabondK.Windows.Converters
                 if (value == null || value == DependencyProperty.UnsetValue || value == Binding.DoNothing
                     || !Helper.IsBooleanConvertable(value)) continue;
 
+                hasValue = true;
                 if (value.To<bool>() != IsAndOperation) return Invert != IsAndOperation ? (HiddenInsteadOfCollapsed ? Visibility.Hidden : Visibility.Collapsed) : Visibility.Visible;
             }
 
